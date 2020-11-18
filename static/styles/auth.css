@@ -68,8 +68,10 @@ body {
     margin-top: 20%;
 }
 .auth-window-btnArea__bigBtn {
+    border: none;
     background: #1A7749;
     padding: 10px 0;
+    width: 100%;
     border-radius: 5px;
     text-align: center;
     font-weight: 500;

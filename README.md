@@ -1,5 +1,8 @@
 # praktikum_chat
 
+По поводу списков полностью согласен, касательно спанов, данная рекомендация сделана для того, 
+чтобы избежать лишней вложенности?
+
 ### Netlify - https://lucid-hopper-fdaf94.netlify.app/ ###
 ### Figma - https://www.figma.com/file/a7nSJS2XszZC10cw37JGeQ/My-Chat?node-id=0%3A1 ###
 

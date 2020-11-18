@@ -67,10 +67,11 @@ body {
     overflow: auto;
 }
 .chat-list {
-    margin-top: 10px;
-    margin-right: -10px;
+    margin: 10px -10px 0 0;
+    padding-left: 0;
     overflow: auto;
     max-height: 810px;
+    list-style-type:none;
 }
 .chat-list:hover {
     padding-right: 11px;
@@ -128,6 +129,7 @@ body {
 }
 .content-area__header {
     font-weight: 500;
+    padding-bottom: 7px;
     font-size: 16px;
     line-height: 19px;
 }
@@ -139,19 +141,21 @@ body {
     color: #787878;
 }
 .chat-list__info-area {
+    position: relative;
     margin-left: auto;
 }
 .info-area__time {
     text-align: right;
-    padding-bottom: 10px;
     font-weight: 500;
     font-size: 12px;
     line-height: 14px;
     color: #787878;
 }
 .info-area__counter {
-    display: table-cell;
-    vertical-align: middle;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 26px / 2);
+    display: table;
     width: 26px;
     height: 26px;
     border-radius: 50%;
@@ -161,6 +165,10 @@ body {
     font-weight: 500;
     font-size: 12px;
     line-height: 14px;
+}
+.info-area__counter span {
+    display: table-cell;
+    vertical-align: middle;
 }
 .chats-wrapper__main-content {
     margin: 0 20px;
@@ -254,8 +262,10 @@ body {
     background: #85BA6A;
 }
 .chat-area {
+    list-style-type: none;
+    padding-left: 0;
     overflow: auto;
-    height: calc(100% - 90px - 64px);
+    height: calc(100% - 170px);
     margin-right: -10px;
 }
 .chat-area:hover {
