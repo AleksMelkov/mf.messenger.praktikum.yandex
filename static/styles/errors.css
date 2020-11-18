@@ -1,0 +1,38 @@
+html, body {
+    margin: 0;
+}
+body {
+    font-family: Roboto;
+    color: #212529;
+}
+.error-wrapper {
+    height: 100vh;
+    background: #E5E5E5;
+}
+.error-wrapper-content {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    left: calc(50% - 500px/2);
+    top: calc(50% - 200px/2);
+}
+.error-wrapper-content__header {
+    text-align: center;
+}
+.error-wrapper-content__text {
+    text-align: center;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 23px;
+}
+.error-wrapper-content__link {
+    padding-top: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #1A7749;
+}

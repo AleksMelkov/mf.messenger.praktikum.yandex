@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="styles/auth.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<form class="auth-window">
+    <div class="auth-window__title">Регистрация</div>
+    <div class="auth-window-field">
+        <small class="auth-window-field__title">Почта</small>
+        <input type="text" name="email" class="auth-window-field__input" placeholder="Почта">
+        <small class="auth-window-field__error">Неверная почта</small>
+    </div>
+    <div class="auth-window-field auth-window-field_small_padding">
+        <small class="auth-window-field__title">Логин</small>
+        <input type="text" name="login" class="auth-window-field__input" placeholder="Логин">
+        <small class="auth-window-field__error">Неверный Логин</small>
+    </div>
+    <div class="auth-window-field auth-window-field_small_padding">
+        <small class="auth-window-field__title">Имя</small>
+        <input type="text" name="name" class="auth-window-field__input" placeholder="Имя">
+    </div>
+    <div class="auth-window-field auth-window-field_small_padding">
+        <small class="auth-window-field__title">Имя</small>
+        <input type="text" name="surname" class="auth-window-field__input" placeholder="Фамилия">
+    </div>
+    <div class="auth-window-field auth-window-field_small_padding">
+        <small class="auth-window-field__title">Пароль</small>
+        <input type="password" name="password" class="auth-window-field__input" placeholder="Пароль">
+    </div>
+    <div class="auth-window-field auth-window-field_small_padding">
+        <small class="auth-window-field__title">Повторите пароль</small>
+        <input type="password" name="repeat_password" class="auth-window-field__input" placeholder="Повторите пароль">
+        <small class="auth-window-field__error">Пароли не совпадают</small>
+    </div>
+    <div class="auth-window-btnArea auth-window-btnArea_small_margin">
+        <div class="auth-window-btnArea__bigBtn">Зарегистрироваться</div>
+        <a href="/register.html" class="auth-window-btnArea__smallBtn">Забыли пароль?</a>
+    </div>
+</form>
+</body>
+</html>
+<script>
+    let submitBtn = document.querySelector('.auth-window-btnArea__bigBtn');
+    submitBtn.addEventListener('click',function () {
+        let form = document.querySelector('.auth-window');
+        console.log({
+            email:form.email.value,
+            login:form.login.value,
+            name:form.name.value,
+            surname:form.surname.value,
+            password:form.password.value,
+            repeat_password:form.repeat_password.value
+        });
+    });
+</script>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="styles/auth.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <form class="auth-window">
+        <div class="auth-window__title">Авторизация</div>
+        <div class="auth-window-field">
+            <small class="auth-window-field__title">Почта</small>
+            <input type="text" name="email" class="auth-window-field__input" placeholder="Почта">
+            <small class="auth-window-field__error">Неверная почта</small>
+        </div>
+        <div class="auth-window-field">
+            <small class="auth-window-field__title">Пароль</small>
+            <input type="password" name="password" class="auth-window-field__input" placeholder="Пароль">
+            <small class="auth-window-field__error">Неверный пароль</small>
+        </div>
+        <div class="auth-window-btnArea">
+            <div class="auth-window-btnArea__bigBtn">Войти</div>
+            <a href="/register.html" class="auth-window-btnArea__smallBtn">Нет аккаунта?</a>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    let submitBtn = document.querySelector('.auth-window-btnArea__bigBtn');
+    submitBtn.addEventListener('click',function () {
+        let form = document.querySelector('.auth-window');
+        console.log({email:form.email.value,password:form.password.value});
+    });
+</script>
