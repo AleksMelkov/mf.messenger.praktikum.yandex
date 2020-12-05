@@ -85,7 +85,7 @@ class App {
     constructor() {
         this.elements = {}
         this.state = {
-            isAuth:true,
+            isAuth:false,
             activeChat:{},
             user:{}
         }
