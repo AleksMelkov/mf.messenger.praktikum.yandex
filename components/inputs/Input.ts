@@ -15,7 +15,13 @@ export default class Input extends Block {
         if (Object.keys(this.props).includes('class')) {
             const className:string = 'class';
             const parser = new DOMParser();
-            return parser.parseFromString(tmpl.compile(this.props),"text/html").querySelector(`.${this.props[className]}`);
+            const input:Node | null = parser.parseFromString(tmpl.compile(this.props),"text/html").querySelector(`.${this.props[className]}`);
+            if (input&&Object.keys(this.props).includes('event')) {
+                input.addEventListener(this.props.event.type,(event:Event)=>{
+                    this.props.event.callback(event);
+                });
+            }
+            return input
         }
     }
 }
