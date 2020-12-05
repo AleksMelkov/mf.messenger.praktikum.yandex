@@ -1,0 +1,17 @@
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es6",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "alwaysStrict": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "baseUrl": "./",
+    "lib": ["es6", "dom", "es2017"],
+    "outDir": "public"
+  },
+  "exclude":["node_modules"]
+}
