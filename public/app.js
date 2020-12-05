@@ -27,16 +27,24 @@ import { saveProfileTmpl } from "./components/buttons/save_profile/template.js";
 import { saveProfileController } from "./components/buttons/save_profile/controller.js";
 import { savePassTmpl } from "./components/buttons/save_pass/template.js";
 import { savePassController } from "./components/buttons/save_pass/controller.js";
+import { sendMessageTmpl } from "./components/buttons/send_message/template.js";
+import { sendMessageController } from "./components/buttons/send_message/component.js";
+import { uploadAttachTmpl } from "./components/buttons/upload_attach/template.js";
+import { uploadAttachController } from "./components/buttons/upload_attach/component.js";
 
 import Input from "./components/inputs/Input.js";
 import { searchTmpl } from "./components/inputs/search/template.js";
 import { searchController } from "./components/inputs/search/controller.js";
+import { messageInputTmpl } from "./components/inputs/message_input/template.js";
+import { messageInputController } from "./components/inputs/message_input/controller.js";
 
 import List from "./components/list/List.js";
 import { chatsListTmpl } from "./components/list/chats/template.js";
 import { chatsController } from "./components/list/chats/controller.js";
 import { chatSettingsTmpl } from "./components/list/chat_settings/template.js";
 import { chatSettingsController } from "./components/list/chat_settings/controller.js";
+import { messagesTmpl } from "./components/list/messages/template.js";
+import { messagesController } from "./components/list/messages/controller.js";
 
 import Content from "./components/content/Content.js";
 import { headerContentTmpl } from "./components/content/header_content/template.js";
@@ -67,6 +75,8 @@ window.GLOBAL_EVENTS = {
     SAVE_PROFILE: 'save_profile',
     PASS_CHANGE: 'pass_change',
     SAVE_PASS: 'save_pass',
+    UPLOAD_ATTACH: 'upload_attach',
+    SEND_MESSAGE: 'send_message',
 }
 
 window.globalEventBus = new EventBus();
@@ -75,7 +85,7 @@ class App {
     constructor() {
         this.elements = {}
         this.state = {
-            isAuth:false,
+            isAuth:true,
             activeChat:{},
             user:{}
         }
@@ -86,7 +96,6 @@ class App {
         if (!this.state.isAuth) {
             this.renderAuthForm();
         } else {
-            document.querySelector('.window-wrapper').classList.remove('window-wrapper__active');
             this.renderHeaderButtons();
             this.renderSearchInput();
             this.renderChats();
@@ -105,6 +114,8 @@ class App {
         globalEventBus.on(GLOBAL_EVENTS.SAVE_PROFILE,this.profileSaveEvent.bind(this));
         globalEventBus.on(GLOBAL_EVENTS.PASS_CHANGE,this.passChangeEvent);
         globalEventBus.on(GLOBAL_EVENTS.SAVE_PASS,this.passSaveEvent.bind(this));
+        globalEventBus.on(GLOBAL_EVENTS.UPLOAD_ATTACH,this.uploadAttach);
+        globalEventBus.on(GLOBAL_EVENTS.SEND_MESSAGE,this.sendMessage);
     }
 
     renderAuthForm() {
@@ -112,6 +123,7 @@ class App {
         this.elements.authSubmit = new Button(authSubmitController,authSubmitTmpl);
         this.elements.notAccount = new Button(notAccountController,notAccountTmpl);
         const parent = document.querySelector('.window-wrapper');
+        parent.classList.add('window-wrapper-active');
         parent.appendChild(this.elements.authForm.getContent());
         const buttonBlock = parent.querySelector(`.${this.elements.authForm.props.buttonBlock.class}`);
         buttonBlock.appendChild(this.elements.authSubmit.getContent());
@@ -178,6 +190,30 @@ class App {
             parent.removeChild(node);
         }
         parent.prepend(this.elements.headerName.getContent());
+    }
+
+    renderMessages() {
+        this.elements.messages = new List(messagesController,messagesTmpl);
+        const parent = document.querySelector('.chats-wrapper__main-content');
+        const node = parent.querySelector(`.${this.elements.messages.props.parentTag.class}`);
+        if (!node) {
+            parent.appendChild(this.elements.messages.getContent())
+        }
+    }
+
+    renderBottomPanel() {
+        this.elements.uploadUttach = new Button(uploadAttachController,uploadAttachTmpl);
+        this.elements.messageInput = new Input(messageInputController,messageInputTmpl);
+        this.elements.sendMessage = new Button(sendMessageController,sendMessageTmpl);
+        const parent = document.querySelector('.chats-wrapper__main-content');
+        if (!parent.querySelector('.main-content__bottom-panel')) {
+            const panel = document.createElement('div');
+            panel.classList.add('main-content__bottom-panel');
+            panel.appendChild(this.elements.uploadUttach.getContent());
+            panel.appendChild(this.elements.messageInput.getContent());
+            panel.appendChild(this.elements.sendMessage.getContent());
+            parent.appendChild(panel);
+        }
     }
 
     renderProfileReturnButton() {
@@ -259,6 +295,8 @@ class App {
         });
         this.renderHeaderName();
         this.renderChatSetting();
+        this.renderMessages();
+        this.renderBottomPanel();
         console.log('Показываем чат с активным пользователем')
     }
 
@@ -336,6 +374,14 @@ class App {
         });
         this.elements.saveProfile.hide();
         this.elements.savePass.hide();
+    }
+
+    uploadAttach() {
+
+    }
+
+    sendMessage() {
+
     }
 }
 

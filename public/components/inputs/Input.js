@@ -19,11 +19,18 @@ var Input = /** @class */ (function (_super) {
         return _super.call(this, props, template) || this;
     }
     Input.prototype.render = function () {
+        var _this = this;
         var tmpl = new Templator(this.template);
         if (Object.keys(this.props).includes('class')) {
             var className = 'class';
             var parser = new DOMParser();
-            return parser.parseFromString(tmpl.compile(this.props), "text/html").querySelector("." + this.props[className]);
+            var input = parser.parseFromString(tmpl.compile(this.props), "text/html").querySelector("." + this.props[className]);
+            if (input && Object.keys(this.props).includes('event')) {
+                input.addEventListener(this.props.event.type, function (event) {
+                    _this.props.event.callback(event);
+                });
+            }
+            return input;
         }
     };
     return Input;
