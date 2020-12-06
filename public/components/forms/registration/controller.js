@@ -1,10 +1,12 @@
+import Validator from "../../../app/Validator.js";
+
 export const registrationController = {
     parentTag: {
         name: 'form',
         class: 'auth-window',
     },
     header: {
-        class: 'auth-window__title',
+        class: 'register-window__title',
         text: 'Регистрация'
     },
     fields: [
@@ -28,17 +30,17 @@ export const registrationController = {
             elementClass: 'auth-window-field',
             header: 'Имя',
             type: 'text',
-            name: 'name',
+            name: 'first_name',
             placeholder: 'Имя',
-            errorText: '',
+            errorText: 'Имя не введено',
         },
         {
             elementClass: 'auth-window-field',
             header: 'Фамилия',
             type: 'text',
-            name: 'surname',
+            name: 'second_name',
             placeholder: 'Фамилия',
-            errorText: '',
+            errorText: 'Фамилия не введена',
         },
         {
             elementClass: 'auth-window-field',
@@ -46,7 +48,7 @@ export const registrationController = {
             type: 'password',
             name: 'password',
             placeholder: 'Пароль',
-            errorText: 'Неверный пароль',
+            errorText: 'Пароль должен содержать более 6 символов',
         },
         {
             elementClass: 'auth-window-field',
@@ -60,25 +62,77 @@ export const registrationController = {
     buttonBlock: {
         class: 'register-window-btnArea'
     },
+    data:{
+        email: '',
+        login: '',
+        first_name: '',
+        second_name: '',
+        password: '',
+        repeat_password: '',
+    },
     formEvents: [
         {
             type: 'submit',
             callback: function (event) {
-                console.log('submit')
+                event.preventDefault();
+                const form = event.target.closest('form');
+                let submitError = false;
+                Object.entries(registrationController.data).forEach(([key,item])=>{
+                    if ((item!==''&&!Validator.validate(item,key))||item==='') {
+                        submitError = true;
+                        form.querySelector(`input[name="${key}"]`)
+                            .closest('.auth-window-field')
+                            .querySelector('.auth-window-field__error')
+                            .style.opacity = 1;
+                    }
+                });
+                if (registrationController.data.password!==registrationController.data.repeat_password) {
+                    submitError = true;
+                    form.querySelector('input[type="repeat_password"]')
+                        .closest('.auth-window-field')
+                        .querySelector('.auth-window-field__error')
+                        .style.opacity = 1;
+                }
+                if (!submitError) {
+                    form.submit();
+                }
             }
         },
         {
             type: 'focusout',
             callback: function (event) {
                 let input = event.target.closest('input')
-                console.log(`Поле ${input.name} потеряло фокус`)
+                if (input) {
+                    const header = input.closest('.auth-window-field').querySelector('.auth-window-field__title')
+                    const error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
+                    if (input.value==='') {
+                        header.classList.remove('auth-window-field__title-show');
+                        header.classList.add('auth-window-field__title-hide');
+                        setTimeout(()=>{
+                            header.classList.remove('auth-window-field__title-hide');
+                            input.placeholder = header.textContent;
+                        },300);
+                        registrationController.data[input.name]='';
+                    }
+                    if (input.value!==''&&Validator.validate(input,input.name)) {
+                        registrationController.data[input.name] = input.value;
+                    } else if (input.value!=='') {
+                        error.style.opacity = 1;
+                    }
+                }
             }
         },
         {
             type: 'focusin',
             callback: function (event) {
                 let input = event.target.closest('input')
-                console.log(`Поле ${input.name} получило фокус`)
+                if (input) {
+                    const header = input.closest('.auth-window-field').querySelector('.auth-window-field__title')
+                    const error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
+                    input.placeholder = ''
+                    header.classList.add('auth-window-field__title-show')
+                    error.style.opacity = 0;
+                }
             }
         },
     ],

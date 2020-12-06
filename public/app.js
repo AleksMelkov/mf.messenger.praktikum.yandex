@@ -1,3 +1,24 @@
+import EventBus from "./app/EventBus.js";
+
+window.GLOBAL_EVENTS = {
+    FAVORITE: 'favorite_click',
+    PROFILE: 'profile_click',
+    SEARCH: 'search_input',
+    CHAT_ELEMENT: 'chat_click',
+    TO_REGISTRATION: 'to_registration',
+    FORGOT_PASS: 'forgot_pass',
+    PROFILE_RETURN: 'profile_return',
+    PROFILE_CHANGE: 'profile_change',
+    SAVE_PROFILE: 'save_profile',
+    PASS_CHANGE: 'pass_change',
+    SAVE_PASS: 'save_pass',
+    UPLOAD_ATTACH: 'upload_attach',
+    SEND_MESSAGE: 'send_message',
+    PROFILE_DATA: 'profile_data',
+}
+
+window.globalEventBus = new EventBus();
+
 import Button from "./components/buttons/Button.js";
 import { favoriteTmpl } from "./components/buttons/favorite/template.js";
 import { favoriteController } from "./components/buttons/favorite/controller.js";
@@ -61,25 +82,7 @@ import { profileFormTemplate } from "./components/forms/profile_form/template.js
 import { profileFormController } from "./components/forms/profile_form/controller.js";
 
 
-import EventBus from "./app/EventBus.js";
-
-window.GLOBAL_EVENTS = {
-    FAVORITE: 'favorite_click',
-    PROFILE: 'profile_click',
-    SEARCH: 'search_input',
-    CHAT_ELEMENT: 'chat_click',
-    TO_REGISTRATION: 'to_registration',
-    FORGOT_PASS: 'forgot_pass',
-    PROFILE_RETURN: 'profile_return',
-    PROFILE_CHANGE: 'profile_change',
-    SAVE_PROFILE: 'save_profile',
-    PASS_CHANGE: 'pass_change',
-    SAVE_PASS: 'save_pass',
-    UPLOAD_ATTACH: 'upload_attach',
-    SEND_MESSAGE: 'send_message',
-}
-
-window.globalEventBus = new EventBus();
+import Validator from "./app/Validator.js";
 
 class App {
     constructor() {
@@ -87,7 +90,10 @@ class App {
         this.state = {
             isAuth:false,
             activeChat:{},
-            user:{}
+            user:{
+                common: {},
+                password: {},
+            },
         }
         this._initEvents();
     }
@@ -116,6 +122,7 @@ class App {
         globalEventBus.on(GLOBAL_EVENTS.SAVE_PASS,this.passSaveEvent.bind(this));
         globalEventBus.on(GLOBAL_EVENTS.UPLOAD_ATTACH,this.uploadAttach);
         globalEventBus.on(GLOBAL_EVENTS.SEND_MESSAGE,this.sendMessage);
+        globalEventBus.on(GLOBAL_EVENTS.PROFILE_DATA,this.profileDataEvent.bind(this))
     }
 
     renderAuthForm() {
@@ -136,7 +143,7 @@ class App {
         this.elements.forgotPass = new Button(forgotPassController,forgotPassTmpl);
         const parent = document.querySelector('.window-wrapper');
         const form = this.elements.registrationForm.getContent();
-        form.querySelector('.auth-window-field').classList.remove('auth-window-field_small_padding');
+        // form.querySelector('.auth-window-field').classList.remove('auth-window-field_small_padding');
         parent.appendChild(form);
         const buttonBlock = form.querySelector(`.${this.elements.registrationForm.props.buttonBlock.class}`);
         buttonBlock.appendChild(this.elements.registerSubmit.getContent());
@@ -325,26 +332,32 @@ class App {
         });
     }
 
+    profileDataEvent(type,name,value) {
+        this.state.user[type][name] = value;
+    }
+
     profileSaveEvent() {
-        let elements = document.querySelectorAll('.profile-wrapper-form__element[type="common"] .profile-wrapper-form__element-input');
-        let result = {};
-        Array.from(elements).forEach(item=>{
-            if (item.textContent===''||item.getAttribute('data-placeholder')===item.textContent) {
-                result[item.getAttribute('name')] = item.getAttribute('data-placeholder');
-            } else {
-                result[item.getAttribute('name')] = item.textContent;
+        let error = false;
+        Object.entries(this.state.user.common).forEach(([key,item])=>{
+            if (!Validator.validate(item,key)) {
+                error = true;
+                document.querySelector(`.profile-wrapper-form__element-input[name="${key}"]`)
+                    .closest('.profile-wrapper-form__element[type="common"]')
+                    .style.borderColor = 'red';
             }
         });
-        let fields = document.querySelectorAll('.profile-wrapper-form__element[type="common"]');
-        Array.from(fields).forEach(item=>{
-            if (item.classList.contains('profile-wrapper-form__element_hide')) item.style.display = 'flex';
-            if (
-                !item.classList.contains('profile-wrapper-form__element_hide') &&
-                !item.classList.contains('profile-wrapper-form__element_save')
-            ) item.querySelector('.profile-wrapper-form__element-input').setAttribute('contenteditable',false);
-            if (item.classList.contains('profile-wrapper-form__element_save')) item.style.display = 'none';
-        });
-        console.log(result);
+        if (!error) {
+            let fields = document.querySelectorAll('.profile-wrapper-form__element[type="common"]');
+            fields.forEach(item=>{
+                if (item.classList.contains('profile-wrapper-form__element_hide')) item.style.display = 'flex';
+                if (
+                    !item.classList.contains('profile-wrapper-form__element_hide') &&
+                    !item.classList.contains('profile-wrapper-form__element_save')
+                ) item.querySelector('.profile-wrapper-form__element-input').setAttribute('contenteditable',false);
+                if (item.classList.contains('profile-wrapper-form__element_save')) item.style.display = 'none';
+            });
+            console.log(this.state.user.common);
+        }
     }
 
     passChangeEvent() {
@@ -363,17 +376,28 @@ class App {
     }
 
     passSaveEvent() {
+        if (this.state.user.password.new_password!==this.state.user.password.repeat_password) {
+            document.querySelector('.profile-wrapper-form__element-input[name="repeat_password"]')
+                .closest('.profile-wrapper-form__element')
+                .style.borderColor = 'red';
+        } else {
+            document.querySelector('.profile-wrapper-form__element-input[name="repeat_password"]')
+                .closest('.profile-wrapper-form__element')
+                .style.borderColor = 'rgb(206, 206, 206)';
+            let hideElements = document.querySelectorAll('.profile-wrapper-form__element[type="common"]');
+            Array.from(hideElements).forEach(item=>{
+                item.style.display = 'flex';
+            });
+            let showElements = document.querySelectorAll('.profile-wrapper-form__element[type="password"]');
+            Array.from(showElements).forEach(item=>{
+                item.textContent = '';
+                item.style.display = 'none';
+            });
+            this.elements.saveProfile.hide();
+            this.elements.savePass.hide();
+        }
 
-        let hideElements = document.querySelectorAll('.profile-wrapper-form__element[type="common"]');
-        Array.from(hideElements).forEach(item=>{
-            item.style.display = 'flex';
-        });
-        let showElements = document.querySelectorAll('.profile-wrapper-form__element[type="password"]');
-        Array.from(showElements).forEach(item=>{
-            item.style.display = 'none';
-        });
-        this.elements.saveProfile.hide();
-        this.elements.savePass.hide();
+
     }
 
     uploadAttach() {
