@@ -11,7 +11,7 @@
     "strictNullChecks": true,
     "baseUrl": "./",
     "lib": ["es6", "dom", "es2017"],
-    "outDir": "public"
+    "outDir": "public/app"
   },
   "exclude":["node_modules"]
 }
