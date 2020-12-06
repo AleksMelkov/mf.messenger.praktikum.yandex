@@ -4,18 +4,13 @@ export default class Templator {
 
     protected _template: string;
 
-    public events:object[];
-
     constructor(template: string) {
         this._template = template;
     }
 
     get(obj: object, path: string, defaultValue: unknown = null): any {
         const keys = path.split('.');
-        type ObjectType = {
-            [key: string]: any;
-        }
-        let result: ObjectType = obj;
+        let result: Record<string, any> = obj;
         for (let key of keys) {
             result = result[key];
             if (result === undefined) {

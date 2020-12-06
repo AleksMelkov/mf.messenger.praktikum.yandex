@@ -1,15 +1,12 @@
-type ObjectType = {
-    [key: string]: any[];
-}
 export default class EventBus {
 
-    protected listeners:ObjectType;
+    protected listeners:Record<string, Function[]>;
 
     constructor() {
         this.listeners = {};
     }
 
-    public on(event: string, callback:unknown):void {
+    public on(event: string, callback:() => void):void {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }

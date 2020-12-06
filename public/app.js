@@ -19,67 +19,67 @@ window.GLOBAL_EVENTS = {
 
 window.globalEventBus = new EventBus();
 
-import Button from "./components/buttons/Button.js";
-import { favoriteTmpl } from "./components/buttons/favorite/template.js";
-import { favoriteController } from "./components/buttons/favorite/controller.js";
-import { profileTmpl } from "./components/buttons/profile/template.js";
-import { profileController } from "./components/buttons/profile/controller.js";
-import { chatSettingsButtonTmpl } from "./components/buttons/chat_settings/template.js";
-import { chatSettingsComponentButton } from "./components/buttons/chat_settings/component.js";
-import { authSubmitTmpl } from "./components/buttons/auth_submit/template.js";
-import { authSubmitController } from "./components/buttons/auth_submit/controller.js";
-import { notAccountTmpl } from "./components/buttons/not_account/template.js";
-import { notAccountController } from "./components/buttons/not_account/controller.js";
-import { registerSubmitTmpl } from "./components/buttons/registerSubmit/template.js";
-import { registerSubmitController } from "./components/buttons/registerSubmit/controller.js";
-import { forgotPassTmpl } from "./components/buttons/forgot_pass/template.js";
-import { forgotPassController } from "./components/buttons/forgot_pass/controller.js";
-import { profileReturnTmpl } from "./components/buttons/profile_return/template.js";
-import { profileReturnController } from "./components/buttons/profile_return/controller.js";
-import { changeAvatarTmpl } from "./components/buttons/change_avatar/template.js";
-import { changeAvatarComponent } from "./components/buttons/change_avatar/component.js";
-import { changeProfileTmpl } from "./components/buttons/change_profile/template.js";
-import { changeProfileController } from "./components/buttons/change_profile/controller.js";
-import { changePassTmpl } from "./components/buttons/change_pass/template.js";
-import { changePassController } from "./components/buttons/change_pass/controller.js";
-import { exitProfileTmpl } from "./components/buttons/exit_profile/template.js";
-import { exitProfileController } from "./components/buttons/exit_profile/controller.js";
-import { saveProfileTmpl } from "./components/buttons/save_profile/template.js";
-import { saveProfileController } from "./components/buttons/save_profile/controller.js";
-import { savePassTmpl } from "./components/buttons/save_pass/template.js";
-import { savePassController } from "./components/buttons/save_pass/controller.js";
-import { sendMessageTmpl } from "./components/buttons/send_message/template.js";
-import { sendMessageController } from "./components/buttons/send_message/component.js";
-import { uploadAttachTmpl } from "./components/buttons/upload_attach/template.js";
-import { uploadAttachController } from "./components/buttons/upload_attach/component.js";
+import Button from "./app/components/buttons/Button.js";
+import { favoriteTmpl } from "./app/components/buttons/favorite/template.js";
+import { favoriteController } from "./app/components/buttons/favorite/controller.js";
+import { profileTmpl } from "./app/components/buttons/profile/template.js";
+import { profileController } from "./app/components/buttons/profile/controller.js";
+import { chatSettingsButtonTmpl } from "./app/components/buttons/chat_settings/template.js";
+import { chatSettingsComponentButton } from "./app/components/buttons/chat_settings/component.js";
+import { authSubmitTmpl } from "./app/components/buttons/auth_submit/template.js";
+import { authSubmitController } from "./app/components/buttons/auth_submit/controller.js";
+import { notAccountTmpl } from "./app/components/buttons/not_account/template.js";
+import { notAccountController } from "./app/components/buttons/not_account/controller.js";
+import { registerSubmitTmpl } from "./app/components/buttons/registerSubmit/template.js";
+import { registerSubmitController } from "./app/components/buttons/registerSubmit/controller.js";
+import { forgotPassTmpl } from "./app/components/buttons/forgot_pass/template.js";
+import { forgotPassController } from "./app/components/buttons/forgot_pass/controller.js";
+import { profileReturnTmpl } from "./app/components/buttons/profile_return/template.js";
+import { profileReturnController } from "./app/components/buttons/profile_return/controller.js";
+import { changeAvatarTmpl } from "./app/components/buttons/change_avatar/template.js";
+import { changeAvatarComponent } from "./app/components/buttons/change_avatar/component.js";
+import { changeProfileTmpl } from "./app/components/buttons/change_profile/template.js";
+import { changeProfileController } from "./app/components/buttons/change_profile/controller.js";
+import { changePassTmpl } from "./app/components/buttons/change_pass/template.js";
+import { changePassController } from "./app/components/buttons/change_pass/controller.js";
+import { exitProfileTmpl } from "./app/components/buttons/exit_profile/template.js";
+import { exitProfileController } from "./app/components/buttons/exit_profile/controller.js";
+import { saveProfileTmpl } from "./app/components/buttons/save_profile/template.js";
+import { saveProfileController } from "./app/components/buttons/save_profile/controller.js";
+import { savePassTmpl } from "./app/components/buttons/save_pass/template.js";
+import { savePassController } from "./app/components/buttons/save_pass/controller.js";
+import { sendMessageTmpl } from "./app/components/buttons/send_message/template.js";
+import { sendMessageController } from "./app/components/buttons/send_message/component.js";
+import { uploadAttachTmpl } from "./app/components/buttons/upload_attach/template.js";
+import { uploadAttachController } from "./app/components/buttons/upload_attach/component.js";
 
-import Input from "./components/inputs/Input.js";
-import { searchTmpl } from "./components/inputs/search/template.js";
-import { searchController } from "./components/inputs/search/controller.js";
-import { messageInputTmpl } from "./components/inputs/message_input/template.js";
-import { messageInputController } from "./components/inputs/message_input/controller.js";
+import Input from "./app/components/inputs/Input.js";
+import { searchTmpl } from "./app/components/inputs/search/template.js";
+import { searchController } from "./app/components/inputs/search/controller.js";
+import { messageInputTmpl } from "./app/components/inputs/message_input/template.js";
+import { messageInputController } from "./app/components/inputs/message_input/controller.js";
 
-import List from "./components/list/List.js";
-import { chatsListTmpl } from "./components/list/chats/template.js";
-import { chatsController } from "./components/list/chats/controller.js";
-import { chatSettingsTmpl } from "./components/list/chat_settings/template.js";
-import { chatSettingsController } from "./components/list/chat_settings/controller.js";
-import { messagesTmpl } from "./components/list/messages/template.js";
-import { messagesController } from "./components/list/messages/controller.js";
+import List from "./app/components/list/List.js";
+import { chatsListTmpl } from "./app/components/list/chats/template.js";
+import { chatsController } from "./app/components/list/chats/controller.js";
+import { chatSettingsTmpl } from "./app/components/list/chat_settings/template.js";
+import { chatSettingsController } from "./app/components/list/chat_settings/controller.js";
+import { messagesTmpl } from "./app/components/list/messages/template.js";
+import { messagesController } from "./app/components/list/messages/controller.js";
 
-import Content from "./components/content/Content.js";
-import { headerContentTmpl } from "./components/content/header_content/template.js";
-import { headerContentComponent } from "./components/content/header_content/controller.js";
-import { profileHeaderTmpl } from "./components/content/profile_header/template.js";
-import { profileHeaderController } from "./components/content/profile_header/controller.js";
+import Content from "./app/components/content/Content.js";
+import { headerContentTmpl } from "./app/components/content/header_content/template.js";
+import { headerContentComponent } from "./app/components/content/header_content/controller.js";
+import { profileHeaderTmpl } from "./app/components/content/profile_header/template.js";
+import { profileHeaderController } from "./app/components/content/profile_header/controller.js";
 
-import Form from "./components/forms/Form.js";
-import { authTmpl } from "./components/forms/auth/template.js";
-import { authController } from "./components/forms/auth/controller.js";
-import { registrationTmpl } from "./components/forms/registration/template.js";
-import { registrationController } from "./components/forms/registration/controller.js";
-import { profileFormTemplate } from "./components/forms/profile_form/template.js";
-import { profileFormController } from "./components/forms/profile_form/controller.js";
+import Form from "./app/components/forms/Form.js";
+import { authTmpl } from "./app/components/forms/auth/template.js";
+import { authController } from "./app/components/forms/auth/controller.js";
+import { registrationTmpl } from "./app/components/forms/registration/template.js";
+import { registrationController } from "./app/components/forms/registration/controller.js";
+import { profileFormTemplate } from "./app/components/forms/profile_form/template.js";
+import { profileFormController } from "./app/components/forms/profile_form/controller.js";
 
 
 import Validator from "./app/Validator.js";
@@ -143,7 +143,6 @@ class App {
         this.elements.forgotPass = new Button(forgotPassController,forgotPassTmpl);
         const parent = document.querySelector('.window-wrapper');
         const form = this.elements.registrationForm.getContent();
-        // form.querySelector('.auth-window-field').classList.remove('auth-window-field_small_padding');
         parent.appendChild(form);
         const buttonBlock = form.querySelector(`.${this.elements.registrationForm.props.buttonBlock.class}`);
         buttonBlock.appendChild(this.elements.registerSubmit.getContent());
@@ -412,7 +411,3 @@ class App {
 const app = new App();
 
 app.init()
-
-// setTimeout(()=>{
-//     app.elements.chats.setProps();
-// },3000);
