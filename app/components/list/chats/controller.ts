@@ -116,10 +116,17 @@ export const chatsController = {
         {
             type: 'click',
             callback: function (event:Event) {
+                const elements:NodeList|null = document.querySelectorAll('.chat-list__element');
+                if (elements) {
+                    elements.forEach((item:HTMLElement)=>{
+                        item.classList.remove('chat-list__element_active');
+                    })
+                }
                 const chatElement:HTMLElement|null = (event.target as HTMLElement).closest('.chat-list__element');
                 if (!chatElement) {
                     return;
                 }
+                chatElement.classList.add('chat-list__element_active');
                 eventBus.emit(GLOBAL_EVENTS.CHAT_ELEMENT,getElementById(<string>chatElement.dataset.id,chatsController.elements)[0]);
             }
         }
