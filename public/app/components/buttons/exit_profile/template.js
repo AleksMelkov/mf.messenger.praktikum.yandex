@@ -1,5 +1,2 @@
-export const exitProfileTmpl = `
-    <div class="{{ class }} profile-wrapper-form__element_hide" type="common">
-        <div class="profile-wrapper-form__element-name profile-wrapper-form__element-btn profile-wrapper-form__element-name_exit">Выйти</div>
-    </div>
-`;
+export var exitProfileTmpl = "\n    <div class=\"{{ parent.class }} profile-wrapper-form__element_hide\" type=\"common\">\n        <div class=\"profile-wrapper-form__element-name profile-wrapper-form__element-btn profile-wrapper-form__element-name_exit\">\u0412\u044B\u0439\u0442\u0438</div>\n    </div>\n";
+//# sourceMappingURL=template.js.map

@@ -1,9 +1,9 @@
-export const messagesController = {
-    parentTag: {
+export var messagesController = {
+    parent: {
         name: 'ul',
         class: 'chat-area',
     },
-    elements:[
+    elements: [
         {
             class: 'chat-area__date',
             text: '11 ноября',
@@ -38,4 +38,5 @@ export const messagesController = {
                 '                </div>'
         },
     ]
-}
+};
+//# sourceMappingURL=controller.js.map

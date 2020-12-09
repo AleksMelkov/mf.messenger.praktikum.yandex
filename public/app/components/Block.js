@@ -1,4 +1,5 @@
 import EventBus from "../EventBus.js";
+import Templator from "../Templator.js";
 var Block = /** @class */ (function () {
     function Block(props, template) {
         var _this = this;
@@ -11,12 +12,12 @@ var Block = /** @class */ (function () {
             Object.assign(_this.props, nextProps);
             _this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, nextProps);
         };
-        var eventBus = new EventBus();
+        var eventBus = new EventBus(true);
         this._meta = {
             props: props
         };
         this.props = this._makePropsProxy(props);
-        this.template = template;
+        this.tmpl = new Templator(template);
         this.eventBus = function () { return eventBus; };
         this._registerEvents(eventBus);
         eventBus.emit(Block.EVENTS.INIT);

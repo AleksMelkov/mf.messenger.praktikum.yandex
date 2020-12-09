@@ -1,5 +1,2 @@
-export const uploadAttachTmpl = `
-    <div class="{{ class }}">
-        <i class="fas fa-paperclip"></i>
-    </div>
-`;
+export var uploadAttachTmpl = "\n    <div class=\"{{ parent.class }}\">\n        <i class=\"fas fa-paperclip\"></i>\n    </div>\n";
+//# sourceMappingURL=template.js.map

@@ -1,4 +1,5 @@
 import EventBus from "../EventBus.js";
+import Templator from "../Templator.js";
 
 export default  class Block{
     static EVENTS = {
@@ -16,17 +17,17 @@ export default  class Block{
 
     protected eventBus:any;
 
-    protected template:string;
+    protected tmpl:Templator;
 
     constructor(props:object = {},template:string) {
-        const eventBus = new EventBus();
+        const eventBus = new EventBus(true);
 
         this._meta = {
             props
         };
 
         this.props = this._makePropsProxy(props);
-        this.template = template;
+        this.tmpl = new Templator(template);
         this.eventBus = () => eventBus;
         this._registerEvents(eventBus);
         eventBus.emit(Block.EVENTS.INIT);

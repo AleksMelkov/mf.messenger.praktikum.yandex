@@ -1,10 +1,10 @@
-export const chatSettingsController = {
-    parentTag: {
+export var chatSettingsController = {
+    parent: {
         name: 'ul',
         class: 'header-dropdown__list',
     },
-    elementClass:'dropdown__element',
-    elements:[
+    elementClass: 'dropdown__element',
+    elements: [
         {
             class: 'header-dropdown__element',
             name: 'Добавить пользователя',
@@ -16,11 +16,17 @@ export const chatSettingsController = {
             type: 'remove_user',
         },
     ],
-    elementClick: {
-        type: 'click',
-        callback: function (event) {
-            const button = event.target.closest('.header-dropdown__element');
-            console.log(button.dataset.type);
+    events: [
+        {
+            type: 'click',
+            callback: function (event) {
+                var button = event.target.closest('.header-dropdown__element');
+                if (!button) {
+                    return;
+                }
+                console.log(button.dataset.type);
+            }
         }
-    }
-}
+    ]
+};
+//# sourceMappingURL=controller.js.map

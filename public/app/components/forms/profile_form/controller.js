@@ -1,11 +1,13 @@
 import Validator from "../../../Validator.js";
-
-export const profileFormController = {
-    parentTag: {
+import EventBus from "../../../EventBus.js";
+import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+var eventBus = new EventBus();
+export var profileFormController = {
+    parent: {
         name: 'div',
         class: 'profile-wrapper-form',
     },
-    fields: [
+    elements: [
         {
             elementClass: 'profile-wrapper-form__element',
             elementType: 'common',
@@ -88,55 +90,69 @@ export const profileFormController = {
             placeholder: 'Повторите новый пароль'
         },
     ],
-    password:{
-        old_password:'',
-        new_password:'',
-        repeat_password:'',
+    password: {
+        old_password: '',
+        new_password: '',
+        repeat_password: '',
     },
-    formEvents: [
+    events: [
         {
             type: 'focusout',
             callback: function (event) {
-                const input = event.target.closest('div[contenteditable="true"]');
-                if (input) {
-                    const parent = input.closest('.profile-wrapper-form__element');
-                    if (input.textContent!==''&&Validator.validate(input,input.getAttribute('name'))) {
-                        let content;
-                        if (input.textContent.match(/·/)) {
-                            content = profileFormController.password[input.getAttribute('name')]
-                        } else {
-                            content = input.textContent;
-                        }
-                        globalEventBus.emit(GLOBAL_EVENTS.PROFILE_DATA,parent.getAttribute('type'),input.getAttribute('name'),content);
-                    } else {
-                        parent.style.borderColor = 'red';
+                var input = event.target.closest('div[contenteditable="true"]');
+                if (!input) {
+                    return;
+                }
+                var parent = input.closest('.profile-wrapper-form__element');
+                if (!parent) {
+                    return;
+                }
+                if (input.textContent && input.textContent !== '' && Validator.validate(input, input.getAttribute('name'))) {
+                    var content = void 0;
+                    if (input.textContent.match(/·/)) {
+                        content = profileFormController.password[input.getAttribute('name')];
                     }
+                    else {
+                        content = input.textContent;
+                    }
+                    eventBus.emit(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY, true);
+                    eventBus.emit(GLOBAL_EVENTS.PROFILE_DATA, parent.getAttribute('type'), input.getAttribute('name'), content);
+                }
+                else {
+                    parent.style.borderColor = 'red';
+                    eventBus.emit(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY, false);
                 }
             }
         },
         {
             type: 'focusin',
             callback: function (event) {
-                let input = event.target.closest('div[contenteditable="true"]');
-                if (input) {
-                    input.closest('.profile-wrapper-form__element').style.borderColor = '#CECECE';
-                    console.log(`Поле ${input.getAttribute('name')} получило фокус`)
+                var input = event.target.closest('div[contenteditable="true"]');
+                if (!input) {
+                    return;
                 }
+                input.closest('.profile-wrapper-form__element').style.borderColor = '#CECECE';
+                console.log("\u041F\u043E\u043B\u0435 " + input.getAttribute('name') + " \u043F\u043E\u043B\u0443\u0447\u0438\u043B\u043E \u0444\u043E\u043A\u0443\u0441");
             }
         },
         {
             type: 'input',
             callback: function (event) {
-                let input = event.target.closest('div[contenteditable="true"]');
-                if (input&&input.getAttribute('type')==='password') {
-                    profileFormController.password[event.target.getAttribute('name')] += event.target.innerText.substring(0,1);
-                    let dots = '';
-                    for (let i=0;i<event.target.innerText.length;i++) {
-                        dots+='·';
+                var element = event.target;
+                if (!element) {
+                    return;
+                }
+                var input = event.target.closest('div[contenteditable="true"]');
+                if (input && input.getAttribute('type') === 'password') {
+                    profileFormController.password[element.getAttribute('name')] += element.innerText.substring(0, 1);
+                    var dots = '';
+                    for (var i = 0; i < element.innerText.length; i++) {
+                        dots += '·';
                     }
-                    event.target.innerText = dots;
+                    element.innerText = dots;
                 }
             }
         }
     ],
-}
+};
+//# sourceMappingURL=controller.js.map

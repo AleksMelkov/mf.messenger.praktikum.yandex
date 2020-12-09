@@ -1,6 +1,13 @@
 var EventBus = /** @class */ (function () {
-    function EventBus() {
+    function EventBus(isNew) {
+        if (isNew === void 0) { isNew = false; }
+        if (EventBus.__instance && !isNew) {
+            return EventBus.__instance;
+        }
         this.listeners = {};
+        if (!isNew) {
+            EventBus.__instance = this;
+        }
     }
     EventBus.prototype.on = function (event, callback) {
         if (!this.listeners[event]) {

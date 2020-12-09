@@ -12,25 +12,30 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import Block from "../Block.js";
-import Templator from "../../Templator.js";
 var Button = /** @class */ (function (_super) {
     __extends(Button, _super);
     function Button(props, template) {
         return _super.call(this, props, template) || this;
     }
     Button.prototype.render = function () {
-        var _this = this;
-        var tmpl = new Templator(this.template);
-        if (Object.keys(this.props).includes('class')) {
+        if (Object.keys(this.props).includes('parent')) {
+            if (!this.props.parent.class) {
+                throw new Error('Родительский элемент обязательно должен иметь класс');
+            }
             var className = 'class';
             var parser = new DOMParser();
-            var button = parser.parseFromString(tmpl.compile(this.props), "text/html").querySelector("." + this.props[className]);
-            if (button && Object.keys(this.props).includes('event')) {
-                button.addEventListener(this.props.event.type, function (event) {
-                    _this.props.event.callback(event);
+            var button_1 = parser.parseFromString(this.tmpl.compile(this.props), "text/html").querySelector("." + this.props.parent[className]);
+            if (button_1 && Object.keys(this.props).includes('events')) {
+                if (!Array.isArray(this.props.events)) {
+                    throw new Error('Свойство events должно быть массивом');
+                }
+                this.props.events.forEach(function (item) {
+                    button_1.addEventListener(item.type, function (event) {
+                        item.callback(event);
+                    });
                 });
             }
-            return button;
+            return button_1;
         }
     };
     return Button;

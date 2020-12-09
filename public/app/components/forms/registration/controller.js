@@ -1,7 +1,6 @@
 import Validator from "../../../Validator.js";
-
-export const registrationController = {
-    parentTag: {
+export var registrationController = {
+    parent: {
         name: 'form',
         class: 'auth-window',
     },
@@ -9,7 +8,7 @@ export const registrationController = {
         class: 'register-window__title',
         text: 'Регистрация'
     },
-    fields: [
+    elements: [
         {
             elementClass: 'auth-window-field',
             header: 'Почта',
@@ -62,7 +61,7 @@ export const registrationController = {
     buttonBlock: {
         class: 'register-window-btnArea'
     },
-    data:{
+    data: {
         email: '',
         login: '',
         first_name: '',
@@ -70,28 +69,32 @@ export const registrationController = {
         password: '',
         repeat_password: '',
     },
-    formEvents: [
+    events: [
         {
             type: 'submit',
             callback: function (event) {
                 event.preventDefault();
-                const form = event.target.closest('form');
-                let submitError = false;
-                Object.entries(registrationController.data).forEach(([key,item])=>{
-                    if ((item!==''&&!Validator.validate(item,key))||item==='') {
+                var form = event.target.closest('form');
+                if (!form) {
+                    return;
+                }
+                var submitError = false;
+                Object.entries(registrationController.data).forEach(function (_a) {
+                    var key = _a[0], item = _a[1];
+                    if ((item !== '' && !Validator.validate(item, key)) || item === '') {
                         submitError = true;
-                        form.querySelector(`input[name="${key}"]`)
+                        form.querySelector("input[name=\"" + key + "\"]")
                             .closest('.auth-window-field')
                             .querySelector('.auth-window-field__error')
-                            .style.opacity = 1;
+                            .style.opacity = '1';
                     }
                 });
-                if (registrationController.data.password!==registrationController.data.repeat_password) {
+                if (registrationController.data.password !== registrationController.data.repeat_password) {
                     submitError = true;
                     form.querySelector('input[type="repeat_password"]')
                         .closest('.auth-window-field')
                         .querySelector('.auth-window-field__error')
-                        .style.opacity = 1;
+                        .style.opacity = '1';
                 }
                 if (!submitError) {
                     form.submit();
@@ -101,39 +104,58 @@ export const registrationController = {
         {
             type: 'focusout',
             callback: function (event) {
-                let input = event.target.closest('input')
-                if (input) {
-                    const header = input.closest('.auth-window-field').querySelector('.auth-window-field__title')
-                    const error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
-                    if (input.value==='') {
-                        header.classList.remove('auth-window-field__title-show');
-                        header.classList.add('auth-window-field__title-hide');
-                        setTimeout(()=>{
-                            header.classList.remove('auth-window-field__title-hide');
-                            input.placeholder = header.textContent;
-                        },300);
-                        registrationController.data[input.name]='';
-                    }
-                    if (input.value!==''&&Validator.validate(input,input.name)) {
-                        registrationController.data[input.name] = input.value;
-                    } else if (input.value!=='') {
-                        error.style.opacity = 1;
-                    }
+                var input = event.target.closest('input');
+                if (!input) {
+                    return;
+                }
+                var header = input.closest('.auth-window-field').querySelector('.auth-window-field__title');
+                if (!header) {
+                    return;
+                }
+                var error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
+                if (!error) {
+                    return;
+                }
+                if (input.value === '') {
+                    header.classList.remove('auth-window-field__title-show');
+                    header.classList.add('auth-window-field__title-hide');
+                    setTimeout(function () {
+                        header.classList.remove('auth-window-field__title-hide');
+                        if (!input) {
+                            return;
+                        }
+                        input.placeholder = header.textContent;
+                    }, 300);
+                    registrationController.data[input.name] = '';
+                }
+                if (input.value !== '' && Validator.validate(input, input.name)) {
+                    registrationController.data[input.name] = input.value;
+                }
+                else if (input.value !== '') {
+                    error.style.opacity = '1';
                 }
             }
         },
         {
             type: 'focusin',
             callback: function (event) {
-                let input = event.target.closest('input')
-                if (input) {
-                    const header = input.closest('.auth-window-field').querySelector('.auth-window-field__title')
-                    const error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
-                    input.placeholder = ''
-                    header.classList.add('auth-window-field__title-show')
-                    error.style.opacity = 0;
+                var input = event.target.closest('input');
+                if (!input) {
+                    return;
                 }
+                var header = input.closest('.auth-window-field').querySelector('.auth-window-field__title');
+                if (!header) {
+                    return;
+                }
+                var error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
+                if (!error) {
+                    return;
+                }
+                input.placeholder = '';
+                header.classList.add('auth-window-field__title-show');
+                error.style.opacity = '0';
             }
         },
     ],
-}
+};
+//# sourceMappingURL=controller.js.map

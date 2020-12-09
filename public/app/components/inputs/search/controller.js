@@ -1,17 +1,29 @@
-export const searchController = {
-    class: 'contenteditable',
+import EventBus from "../../../EventBus.js";
+import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+var eventBus = new EventBus();
+export var searchController = {
+    parent: {
+        class: 'contenteditable',
+    },
     contenteditableVal: true,
-    event: {
-        type: 'input',
-        callback: function () {
-            let searchInput = document.querySelector(`.${searchController.class}`);
-            if (searchInput.textContent.length>0) {
-                searchInput.dataset.placeholder = "";
-            } else {
-                searchInput.dataset.placeholder = "⌕ Поиск...";
+    events: [
+        {
+            type: 'input',
+            callback: function () {
+                var searchInput = document.querySelector("." + searchController.parent.class);
+                if (!searchInput) {
+                    return;
+                }
+                if (searchInput.textContent && searchInput.textContent.length > 0) {
+                    searchInput.dataset.placeholder = "";
+                }
+                else {
+                    searchInput.dataset.placeholder = "⌕ Поиск...";
+                }
+                console.log(searchInput.textContent);
+                eventBus.emit(GLOBAL_EVENTS.SEARCH);
             }
-            console.log(searchInput.textContent);
-            globalEventBus.emit(GLOBAL_EVENTS.SEARCH)
         }
-    }
-}
+    ]
+};
+//# sourceMappingURL=controller.js.map

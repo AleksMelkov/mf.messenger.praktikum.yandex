@@ -1,3 +1,2 @@
-export const authSubmitTmpl = `
-    <button type="submit" class="{{ class }}">{{ text }}</button>
-`;
+export var authSubmitTmpl = "\n    <button type=\"submit\" class=\"{{ parent.class }}\">{{ parent.text }}</button>\n";
+//# sourceMappingURL=template.js.map

@@ -1,5 +1,2 @@
-export const changePassTmpl = `
-    <div class="{{ class }} profile-wrapper-form__element_hide" type="common">
-        <div class="profile-wrapper-form__element-name profile-wrapper-form__element-btn profile-wrapper-form__element-name_change">Изменить пароль</div>
-    </div>
-`;
+export var changePassTmpl = "\n    <div class=\"{{ parent.class }} profile-wrapper-form__element_hide\" type=\"common\">\n        <div class=\"profile-wrapper-form__element-name profile-wrapper-form__element-btn profile-wrapper-form__element-name_change\">\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u043F\u0430\u0440\u043E\u043B\u044C</div>\n    </div>\n";
+//# sourceMappingURL=template.js.map
