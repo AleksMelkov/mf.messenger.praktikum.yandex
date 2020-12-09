@@ -209,7 +209,7 @@ class App {
         if (!parent) {
             return;
         }
-        const node:HTMLElement|null = parent.querySelector(`.${this.elements.headerName.props.parent.class}`)
+        const node:HTMLElement|null = parent.querySelector(`.${this.elements.headerName.props.class}`);
         if (node) {
             //Удалять элементы плохо, но у меня 0 идей, как это сделать без innerHtml и удаления элементов
             parent.removeChild(node);
@@ -343,7 +343,7 @@ class App {
         (document.querySelector('.main-content__header-info') as HTMLElement).classList.remove('main-content__header-info__hide');
         this.state.activeChat = chat;
         this.elements.headerName.setProps({
-            name: this.state.activeChat.name
+            text: this.state.activeChat.name
         });
         this.renderHeaderName();
         this.renderChatSetting();
