@@ -11,7 +11,7 @@ export default class Templator {
     get(obj: object, path: string, defaultValue: unknown = null): any {
         const keys = path.split('.');
         let result: Record<string, any> = obj;
-        for (let key of keys) {
+        for (const key of keys) {
             result = result[key];
             if (result === undefined) {
                 return defaultValue;
@@ -30,13 +30,13 @@ export default class Templator {
         let tmpl = template;
         if (stringAr) {
             stringAr.forEach((item: string) => {
-                let newElement:any = item.replace('{{', '').replace(/\s*/g, '').replace('}}', '');
+                const newElement:string = item.replace('{{', '').replace(/\s*/g, '').replace('}}', '');
                 if (newElement !== '') {
-                    let re = new RegExp(item);
+                    const re = new RegExp(item);
                     if (typeof this.get(ctx, newElement) !== 'function') {
                         tmpl = tmpl.replace(re, this.get(ctx, newElement));
                     } else {
-                        window[newElement] = this.get(ctx,newElement);
+                        // window[newElement] = this.get(ctx,newElement);
                         tmpl = tmpl.replace(re, 'window.' + newElement + '()');
                     }
                 }

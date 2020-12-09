@@ -1,11 +1,13 @@
+import EventBus from "../../../EventBus.js";
+import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+var eventBus = new EventBus();
 import { getElementById } from "../../../utils/getElementById.js";
-
-export const chatsController = {
-    parentTag: {
+export var chatsController = {
+    parent: {
         name: 'ul',
         class: 'chat-list',
     },
-    elements:[
+    elements: [
         {
             id: 'pb6m8452xemf',
             class: 'chat-list__element',
@@ -107,12 +109,17 @@ export const chatsController = {
             count: 0
         },
     ],
-    elementClick: {
-        type: 'click',
-        callback: function (event) {
-            const chatElement = event.target.closest('.chat-list__element');
-            globalEventBus.emit(GLOBAL_EVENTS.CHAT_ELEMENT,getElementById(chatElement.dataset.id,chatsController.elements)[0]);
+    events: [
+        {
+            type: 'click',
+            callback: function (event) {
+                var chatElement = event.target.closest('.chat-list__element');
+                if (!chatElement) {
+                    return;
+                }
+                eventBus.emit(GLOBAL_EVENTS.CHAT_ELEMENT, getElementById(chatElement.dataset.id, chatsController.elements)[0]);
+            }
         }
-
-    }
-}
+    ]
+};
+//# sourceMappingURL=controller.js.map

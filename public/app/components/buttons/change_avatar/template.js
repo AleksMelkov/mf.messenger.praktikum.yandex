@@ -1,6 +1,2 @@
-export const changeAvatarTmpl = `
-    <div class="{{ class }}">
-        <i class="far fa-image"></i>
-        <div class="profile-wrapper__avatar-text">Поменять<br>аватар</div>
-    </div>
-`;
+export var changeAvatarTmpl = "\n    <div class=\"{{ parent.class }}\">\n        <i class=\"far fa-image\"></i>\n        <div class=\"profile-wrapper__avatar-text\">\u041F\u043E\u043C\u0435\u043D\u044F\u0442\u044C<br>\u0430\u0432\u0430\u0442\u0430\u0440</div>\n    </div>\n";
+//# sourceMappingURL=template.js.map

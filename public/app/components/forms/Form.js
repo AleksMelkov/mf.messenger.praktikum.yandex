@@ -12,26 +12,25 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import Block from "../Block.js";
-import Templator from "../../Templator.js";
 var Form = /** @class */ (function (_super) {
     __extends(Form, _super);
     function Form(props, template) {
         return _super.call(this, props, template) || this;
     }
     Form.prototype.render = function () {
-        var tmpl = new Templator(this.template);
+        var _this = this;
         var parser = new DOMParser();
-        var form = document.createElement(this.props.parentTag.name);
+        var form = document.createElement(this.props.parent.name);
         var className = 'elementClass';
-        form.classList.add(this.props.parentTag.class);
+        form.classList.add(this.props.parent.class);
         if (Object.keys(this.props).includes('header')) {
             var formHeader = document.createElement('div');
             formHeader.classList.add(this.props.header.class);
             formHeader.textContent = this.props.header.text;
             form.appendChild(formHeader);
         }
-        this.props.fields.forEach(function (field) {
-            var node = parser.parseFromString(tmpl.compile(field), "text/html").querySelector("." + field[className]);
+        this.props.elements.forEach(function (field) {
+            var node = parser.parseFromString(_this.tmpl.compile(field), "text/html").querySelector("." + field[className]);
             if (node) {
                 form.appendChild(node);
             }
@@ -41,8 +40,8 @@ var Form = /** @class */ (function (_super) {
             buttonBlock.classList.add(this.props.buttonBlock.class);
             form.appendChild(buttonBlock);
         }
-        if (Object.keys(this.props).includes('formEvents')) {
-            this.props.formEvents.forEach(function (formEvent) {
+        if (Object.keys(this.props).includes('events')) {
+            this.props.events.forEach(function (formEvent) {
                 form.addEventListener(formEvent.type, function (event) {
                     formEvent.callback(event);
                 });

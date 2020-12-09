@@ -1,7 +1,2 @@
-export const registrationTmpl = `
-    <div class="{{ elementClass }} auth-window-field_small_padding">
-        <small class="auth-window-field__title">{{ header }}</small>
-        <input type="{{ type }}" name="{{ name }}" class="auth-window-field__input" placeholder="{{ placeholder }}">
-        <small class="auth-window-field__error">{{ errorText }}</small>
-    </div>
-`;
+export var registrationTmpl = "\n    <div class=\"{{ elementClass }} auth-window-field_small_padding\">\n        <small class=\"auth-window-field__title\">{{ header }}</small>\n        <input type=\"{{ type }}\" name=\"{{ name }}\" class=\"auth-window-field__input\" placeholder=\"{{ placeholder }}\">\n        <small class=\"auth-window-field__error\">{{ errorText }}</small>\n    </div>\n";
+//# sourceMappingURL=template.js.map

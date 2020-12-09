@@ -1,3 +1,2 @@
-export const searchTmpl = `
-    <div class="{{ class }}" contenteditable="{{ contenteditableVal }}" data-placeholder="&#8981; Поиск...""></div>
-`;
+export var searchTmpl = "\n    <div class=\"{{ parent.class }}\" contenteditable=\"{{ contenteditableVal }}\" data-placeholder=\"&#8981; \u041F\u043E\u0438\u0441\u043A...\"\"></div>\n";
+//# sourceMappingURL=template.js.map

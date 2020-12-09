@@ -1,7 +1,2 @@
-export const profileReturnTmpl = `
-    <div class="{{ class }}">
-        <div class="profile-wrapper__return-btn">
-            <i class="fas fa-arrow-left"></i>
-        </div>
-    </div>
-`;
+export var profileReturnTmpl = "\n    <div class=\"{{ parent.class }}\">\n        <div class=\"profile-wrapper__return-btn\">\n            <i class=\"fas fa-arrow-left\"></i>\n        </div>\n    </div>\n";
+//# sourceMappingURL=template.js.map

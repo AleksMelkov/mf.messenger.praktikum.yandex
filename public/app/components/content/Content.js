@@ -12,19 +12,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import Block from "../Block.js";
-import Templator from "../../Templator.js";
 var Content = /** @class */ (function (_super) {
     __extends(Content, _super);
     function Content(props, template) {
         return _super.call(this, props, template) || this;
     }
     Content.prototype.render = function () {
-        var tmpl = new Templator(this.template);
-        if (Object.keys(this.props).includes('class')) {
-            var className = 'class';
-            var parser = new DOMParser();
-            return parser.parseFromString(tmpl.compile(this.props), "text/html").querySelector("." + this.props[className]);
+        if (!Object.keys(this.props.parent).includes('class')) {
+            throw new Error('Не найден ключ class');
         }
+        var className = 'class';
+        var parser = new DOMParser();
+        return parser.parseFromString(this.tmpl.compile(this.props), "text/html").querySelector("." + this.props.parent[className]);
     };
     return Content;
 }(Block));

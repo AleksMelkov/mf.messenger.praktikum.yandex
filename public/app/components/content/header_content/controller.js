@@ -1,4 +1,7 @@
-export const headerContentComponent = {
-    class: 'main-content__header-name',
-    name: '',
-}
+export var headerContentComponent = {
+    parent: {
+        class: 'main-content__header-name',
+        text: '',
+    }
+};
+//# sourceMappingURL=controller.js.map

@@ -2,6 +2,13 @@ type nodeType = HTMLDivElement|HTMLInputElement;
 
 export default class Validator {
 
+    private static REG_EXP = {
+        PHONE: /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/,
+        NAME: /[а-я]*/,
+        EMAIL: /[a-z]*@[a-z]*\.[a-z]*/,
+        LOGIN: /[/\w]*/,
+    }
+
     static validate(node:nodeType|string,type:string) {
         switch (type) {
             case 'phone':
@@ -31,31 +38,30 @@ export default class Validator {
 
     static phones(value:nodeType|string):boolean {
         const string = typeof value==='string' ? value : Validator.getValue(value);
-        return string?.match(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/) ? true : false;
+        return string?.match(Validator.REG_EXP.PHONE) ? true : false;
     }
 
     static names(value:nodeType|string):boolean {
         const string = typeof value==='string' ? value : Validator.getValue(value);
-        return string?.match(/[а-я]*/) ? true : false;
+        return string?.match(Validator.REG_EXP.NAME) ? true : false;
     }
 
     static emails(value:nodeType|string):boolean {
         const string = typeof value==='string' ? value : Validator.getValue(value);
-        return string?.match(/[a-z]*@[a-z]*\.[a-z]*/) ? true : false;
+        return string?.match(Validator.REG_EXP.EMAIL) ? true : false;
     }
 
     static logins(value:nodeType|string):boolean {
         const string = typeof value==='string' ? value : Validator.getValue(value);
-        return string?.match(/[/\w]*/) ? true : false;
+        return string?.match(Validator.REG_EXP.LOGIN) ? true : false;
     }
 
     static passwords(value:nodeType|string):boolean {
         const string = typeof value==='string' ? value : Validator.getValue(value);
         if (string) {
             return string?.length>6 ? true : false;
-        } else {
-            return false;
         }
+        return false;
     }
 
     static getValue(node:nodeType|string) {

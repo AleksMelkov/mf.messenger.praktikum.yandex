@@ -2,8 +2,16 @@ export default class EventBus {
 
     protected listeners:Record<string, Function[]>;
 
-    constructor() {
+    static __instance:EventBus;
+
+    constructor(isNew:boolean=false) {
+        if (EventBus.__instance&&!isNew) {
+            return EventBus.__instance;
+        }
         this.listeners = {};
+        if (!isNew) {
+            EventBus.__instance = this;
+        }
     }
 
     public on(event: string, callback:() => void):void {

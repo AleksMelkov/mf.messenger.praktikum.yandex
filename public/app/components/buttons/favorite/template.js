@@ -1,5 +1,2 @@
-export const favoriteTmpl = `
-    <div class="chats-wrapper__header-btn">
-        <i class="far fa-star"></i> <span>Избранное</span>
-    </div>
-`;
+export var favoriteTmpl = "\n    <div class=\"{{ parent.class }}\">\n        <i class=\"far fa-star\"></i> <span>\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435</span>\n    </div>\n";
+//# sourceMappingURL=template.js.map

@@ -32,7 +32,7 @@ var Templator = /** @class */ (function () {
                         tmpl = tmpl.replace(re, _this.get(ctx, newElement));
                     }
                     else {
-                        window[newElement] = _this.get(ctx, newElement);
+                        // window[newElement] = this.get(ctx,newElement);
                         tmpl = tmpl.replace(re, 'window.' + newElement + '()');
                     }
                 }

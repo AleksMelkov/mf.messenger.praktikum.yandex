@@ -12,7 +12,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 import Block from "../Block.js";
-import Templator from "../../Templator.js";
 var List = /** @class */ (function (_super) {
     __extends(List, _super);
     function List(props, template) {
@@ -20,20 +19,21 @@ var List = /** @class */ (function (_super) {
     }
     List.prototype.render = function () {
         var _this = this;
-        var tmpl = new Templator(this.template);
         var parser = new DOMParser();
-        var parentList = document.createElement(this.props.parentTag.name);
-        parentList.classList.add(this.props.parentTag.class);
+        var parentList = document.createElement(this.props.parent.name);
+        parentList.classList.add(this.props.parent.class);
         var className = 'class';
         this.props.elements.forEach(function (chat) {
-            var node = parser.parseFromString(tmpl.compile(chat), "text/html").querySelector("." + chat[className]);
+            var node = parser.parseFromString(_this.tmpl.compile(chat), "text/html").querySelector("." + chat[className]);
             if (node) {
                 parentList.appendChild(node);
             }
         });
-        if (Object.keys(this.props).includes('elementClick')) {
-            parentList.addEventListener(this.props.elementClick.type, function (event) {
-                _this.props.elementClick.callback(event);
+        if (Object.keys(this.props).includes('events')) {
+            this.props.events.forEach(function (formEvent) {
+                parentList.addEventListener(formEvent.type, function (event) {
+                    formEvent.callback(event);
+                });
             });
         }
         return parentList;

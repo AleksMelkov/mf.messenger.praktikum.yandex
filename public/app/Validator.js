@@ -29,28 +29,26 @@ var Validator = /** @class */ (function () {
     };
     Validator.phones = function (value) {
         var string = typeof value === 'string' ? value : Validator.getValue(value);
-        return (string === null || string === void 0 ? void 0 : string.match(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/)) ? true : false;
+        return (string === null || string === void 0 ? void 0 : string.match(Validator.REG_EXP.PHONE)) ? true : false;
     };
     Validator.names = function (value) {
         var string = typeof value === 'string' ? value : Validator.getValue(value);
-        return (string === null || string === void 0 ? void 0 : string.match(/[а-я]*/)) ? true : false;
+        return (string === null || string === void 0 ? void 0 : string.match(Validator.REG_EXP.NAME)) ? true : false;
     };
     Validator.emails = function (value) {
         var string = typeof value === 'string' ? value : Validator.getValue(value);
-        return (string === null || string === void 0 ? void 0 : string.match(/[a-z]*@[a-z]*\.[a-z]*/)) ? true : false;
+        return (string === null || string === void 0 ? void 0 : string.match(Validator.REG_EXP.EMAIL)) ? true : false;
     };
     Validator.logins = function (value) {
         var string = typeof value === 'string' ? value : Validator.getValue(value);
-        return (string === null || string === void 0 ? void 0 : string.match(/[/\w]*/)) ? true : false;
+        return (string === null || string === void 0 ? void 0 : string.match(Validator.REG_EXP.LOGIN)) ? true : false;
     };
     Validator.passwords = function (value) {
         var string = typeof value === 'string' ? value : Validator.getValue(value);
         if (string) {
             return (string === null || string === void 0 ? void 0 : string.length) > 6 ? true : false;
         }
-        else {
-            return false;
-        }
+        return false;
     };
     Validator.getValue = function (node) {
         if (node instanceof HTMLDivElement) {
@@ -59,6 +57,12 @@ var Validator = /** @class */ (function () {
         else if (node instanceof HTMLInputElement) {
             return node.value;
         }
+    };
+    Validator.REG_EXP = {
+        PHONE: /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/,
+        NAME: /[а-я]*/,
+        EMAIL: /[a-z]*@[a-z]*\.[a-z]*/,
+        LOGIN: /[/\w]*/,
     };
     return Validator;
 }());
