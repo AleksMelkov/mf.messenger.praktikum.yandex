@@ -1,3 +1,3 @@
 export const headerContentTmpl = `
-<div class="{{ parent.class }}">{{ parent.text }}</div>
+<div class="{{ class }}">{{ text }}</div>
 `;
