@@ -1,0 +1,63 @@
+.profile-wrapper-form__element {
+  padding: 15px 0;
+  border-bottom: 1px dashed #CECECE;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.profile-wrapper-form__element[type="password"] {
+  font-size: 40px;
+  line-height: .3;
+  display: none;
+}
+.profile-wrapper-form__element_save {
+  display: none;
+  color: $main-color;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: none;
+}
+.profile-wrapper-form__element:first-of-type {
+  padding-top: 0;
+}
+.profile-wrapper-form__element-name {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+}
+.profile-wrapper-form__element-name_change {
+  color: $main-color;
+  cursor: pointer;
+}
+.profile-wrapper-form__element-name_exit {
+  color: $font-error-color;
+  cursor: pointer;
+}
+.profile-wrapper-form__element-input {
+  text-align: right;
+  outline: none;
+}
+.profile-wrapper-form__element-input[contenteditable="true"] {
+  cursor: text;
+  border-bottom: 1px solid #ccc;
+}
+.profile-wrapper-form__element-input[data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: #787878;
+}
+.profile-wrapper-form__element-input:empty:before {
+  opacity: 1;
+}
+.profile-wrapper-form__element-input:empty:focus:before {
+  opacity: 0;
+  overflow: auto;
+}
+.profile-wrapper-form__element-input[type="password"] {
+  border-bottom: none;
+}
+.profile-wrapper-form__element-input[type="password"]:before {
+  min-width: 10px;
+  font-size: 16px;
+  line-height: .3;
+  border-bottom: none;
+}

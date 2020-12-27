@@ -1,0 +1,28 @@
+.contenteditable {
+  background: #E8E8E8;
+  border: 1px solid #D2D2D2;
+  box-sizing: border-box;
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: #787878;
+}
+.contenteditable_active {
+  background: #fff;
+}
+.contenteditable:focus {
+  outline: none;
+}
+.contenteditable:before {
+  content: attr(data-placeholder);
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 23px;
+  color: #787878;
+}
+.contenteditable:empty:before {
+  opacity: 1;
+}
+.contenteditable:empty:focus:before {
+  opacity: 0;
+  overflow: auto;
+}

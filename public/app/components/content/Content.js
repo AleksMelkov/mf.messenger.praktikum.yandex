@@ -18,8 +18,8 @@ var Content = /** @class */ (function (_super) {
         return _super.call(this, props, template) || this;
     }
     Content.prototype.render = function () {
-        if (!Object.keys(this.props.parent).includes('class')) {
-            throw new Error('Не найден ключ class');
+        if (!this.props.parent.class) {
+            throw new Error('Родительский элемент обязательно должен иметь класс');
         }
         var className = 'class';
         var parser = new DOMParser();

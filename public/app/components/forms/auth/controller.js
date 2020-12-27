@@ -1,4 +1,25 @@
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 import Validator from "../../../Validator.js";
+import Router from "../../../Router.js";
+import { AuthSignin } from "../../../api/auth-api.js";
+import { ROUTE_LIST } from "../../../routes/routeList.js";
+var router = new Router();
+var authSignin = new AuthSignin('/auth');
 export var authController = {
     parent: {
         name: 'form',
@@ -11,11 +32,11 @@ export var authController = {
     elements: [
         {
             elementClass: 'auth-window-field',
-            header: 'Почта',
+            header: 'Логин',
             type: 'text',
-            name: 'email',
-            placeholder: 'Почта',
-            errorText: 'Неверная почта',
+            name: 'login',
+            placeholder: 'Логин',
+            errorText: 'Неверный Логин',
         },
         {
             elementClass: 'auth-window-field',
@@ -30,41 +51,63 @@ export var authController = {
         class: 'auth-window-btnArea'
     },
     data: {
-        email: '',
+        login: '',
         password: '',
+    },
+    methods: {
+        submitForm: function (event) {
+            var form = event.target.closest('form');
+            var submitError = false;
+            if (!form) {
+                return;
+            }
+            Object.entries(authController.data).forEach(function (_a) {
+                var _b = __read(_a, 2), key = _b[0], item = _b[1];
+                if ((item !== '' && !Validator.validate(item, key)) || item === '') {
+                    submitError = true;
+                    var element = form.querySelector("input[name=\"" + key + "\"]");
+                    if (!element) {
+                        return;
+                    }
+                    var field = element.closest('.auth-window-field');
+                    if (!field) {
+                        return;
+                    }
+                    var error = field.querySelector('.auth-window-field__error');
+                    if (!error) {
+                        return;
+                    }
+                    error.style.opacity = '1';
+                }
+            });
+            if (!submitError) {
+                authController.methods.userAuth(form);
+            }
+        },
+        userAuth: function (form) {
+            authSignin.create(form.login.value, form.password.value).then(function (res) {
+                if (res.status !== 200) {
+                    var buttonBlock = document.querySelector("." + authController.buttonBlock.class);
+                    var errorBlock = document.querySelector('.auth-window-btnArea__error');
+                    if (!errorBlock) {
+                        errorBlock = document.createElement('div');
+                        errorBlock.classList.add('auth-window-btnArea__error');
+                    }
+                    buttonBlock.prepend(errorBlock);
+                    errorBlock.textContent = JSON.parse(res.responseText).reason;
+                }
+                else {
+                    router.go(ROUTE_LIST.CHATS);
+                }
+            });
+        }
     },
     events: [
         {
             type: 'submit',
             callback: function (event) {
                 event.preventDefault();
-                var form = event.target.closest('form');
-                var submitError = false;
-                if (!form) {
-                    return;
-                }
-                Object.entries(authController.data).forEach(function (_a) {
-                    var key = _a[0], item = _a[1];
-                    if ((item !== '' && !Validator.validate(item, key)) || item === '') {
-                        submitError = true;
-                        var element = form.querySelector("input[name=\"" + key + "\"]");
-                        if (!element) {
-                            return;
-                        }
-                        var field = element.closest('.auth-window-field');
-                        if (!field) {
-                            return;
-                        }
-                        var error = field.querySelector('.auth-window-field__error');
-                        if (!error) {
-                            return;
-                        }
-                        error.style.opacity = '1';
-                    }
-                });
-                if (!submitError) {
-                    form.submit();
-                }
+                authController.methods.submitForm(event);
             }
         },
         {

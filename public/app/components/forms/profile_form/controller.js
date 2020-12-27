@@ -1,6 +1,24 @@
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 import Validator from "../../../Validator.js";
 import EventBus from "../../../EventBus.js";
 import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+import Store from "../../../Store.js";
+import { getArrayElement } from "../../../utils/getArrayElement.js";
 var eventBus = new EventBus();
 export var profileFormController = {
     parent: {
@@ -95,6 +113,46 @@ export var profileFormController = {
         new_password: '',
         repeat_password: '',
     },
+    store: new Store(),
+    mount: function () {
+        eventBus.on(GLOBAL_EVENTS.SAVE_PROFILE, profileFormController.methods.submitProfile.bind(profileFormController));
+        profileFormController.methods.getUserInfo();
+    },
+    methods: {
+        submitProfile: function () {
+            var error = false;
+            Object.entries(this.state.user.common).forEach(function (_a) {
+                var _b = __read(_a, 2), key = _b[0], item = _b[1];
+                if (!Validator.validate(item, key)) {
+                    error = true;
+                    document.querySelector(".profile-wrapper-form__element-input[name=\"" + key + "\"]")
+                        .closest('.profile-wrapper-form__element[type="common"]')
+                        .style.borderColor = 'red';
+                }
+            });
+            if (!error && this.state.formSavePossibility) {
+                var fields = document.querySelectorAll('.profile-wrapper-form__element[type="common"]');
+                fields.forEach(function (item) {
+                    if (item.classList.contains('profile-wrapper-form__element_hide'))
+                        item.style.display = 'flex';
+                    if (!item.classList.contains('profile-wrapper-form__element_hide') &&
+                        !item.classList.contains('profile-wrapper-form__element_save'))
+                        item.querySelector('.profile-wrapper-form__element-input').setAttribute('contenteditable', 'false');
+                    if (item.classList.contains('profile-wrapper-form__element_save'))
+                        item.style.display = 'none';
+                });
+                console.log(this.state.user.common);
+            }
+        },
+        getUserInfo: function () {
+            var store = new Store();
+            Object.keys(store.value.user).forEach(function (key) {
+                var element = getArrayElement(profileFormController.elements, 'name', key)[0];
+                if (element)
+                    element.placeholder = store.value.user[key];
+            });
+        },
+    },
     events: [
         {
             type: 'focusout',
@@ -108,20 +166,15 @@ export var profileFormController = {
                     return;
                 }
                 if (input.textContent && input.textContent !== '' && Validator.validate(input, input.getAttribute('name'))) {
-                    var content = void 0;
-                    if (input.textContent.match(/·/)) {
-                        content = profileFormController.password[input.getAttribute('name')];
+                    if (!input.textContent.match(/·/)) {
+                        var name_1 = input.getAttribute('name');
+                        profileFormController.user[name_1] = input.textContent;
                     }
-                    else {
-                        content = input.textContent;
-                    }
-                    eventBus.emit(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY, true);
-                    eventBus.emit(GLOBAL_EVENTS.PROFILE_DATA, parent.getAttribute('type'), input.getAttribute('name'), content);
                 }
                 else {
                     parent.style.borderColor = 'red';
-                    eventBus.emit(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY, false);
                 }
+                console.log(profileFormController.user);
             }
         },
         {
@@ -132,7 +185,6 @@ export var profileFormController = {
                     return;
                 }
                 input.closest('.profile-wrapper-form__element').style.borderColor = '#CECECE';
-                console.log("\u041F\u043E\u043B\u0435 " + input.getAttribute('name') + " \u043F\u043E\u043B\u0443\u0447\u0438\u043B\u043E \u0444\u043E\u043A\u0443\u0441");
             }
         },
         {

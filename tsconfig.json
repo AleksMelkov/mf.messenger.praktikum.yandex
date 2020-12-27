@@ -9,9 +9,10 @@
     "alwaysStrict": true,
     "sourceMap": true,
     "strictNullChecks": true,
+    "downlevelIteration": true,
     "baseUrl": "./",
     "lib": ["es6", "dom", "es2017"],
-    "outDir": "public/app"
+    "outDir": "./public/"
   },
   "exclude":["node_modules"]
 }

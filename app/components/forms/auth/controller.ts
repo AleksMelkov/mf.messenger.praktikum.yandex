@@ -1,4 +1,11 @@
 import Validator from "../../../Validator.js";
+import Router from "../../../Router.js";
+import { AuthSignin } from "../../../api/auth-api.js";
+
+import { ROUTE_LIST } from "../../../routes/routeList.js";
+
+const router = new Router();
+const authSignin = new AuthSignin('/auth');
 
 export const authController:Record<string, any> = {
     parent: {
@@ -12,11 +19,11 @@ export const authController:Record<string, any> = {
     elements: [
         {
             elementClass: 'auth-window-field',
-            header: 'Почта',
+            header: 'Логин',
             type: 'text',
-            name: 'email',
-            placeholder: 'Почта',
-            errorText: 'Неверная почта',
+            name: 'login',
+            placeholder: 'Логин',
+            errorText: 'Неверный Логин',
         },
         {
             elementClass: 'auth-window-field',
@@ -31,40 +38,61 @@ export const authController:Record<string, any> = {
         class: 'auth-window-btnArea'
     },
     data: {
-        email:'',
+        login:'',
         password:'',
+    },
+    methods: {
+        submitForm(event:Event) {
+            const form = (event.target as HTMLFormElement).closest('form');
+            let submitError = false;
+            if (!form) {
+                return;
+            }
+            Object.entries(authController.data).forEach(([key,item])=>{
+                if ((item!==''&&!Validator.validate(<string>item,key))||item==='') {
+                    submitError = true;
+                    const element = <HTMLElement>form.querySelector(`input[name="${key}"]`);
+                    if (!element) {
+                        return;
+                    }
+                    const field = <HTMLElement>element.closest('.auth-window-field');
+                    if (!field) {
+                        return;
+                    }
+                    const error = <HTMLElement>field.querySelector('.auth-window-field__error');
+                    if (!error) {
+                        return;
+                    }
+                    error.style.opacity = '1';
+                }
+            })
+            if (!submitError) {
+                authController.methods.userAuth(form);
+            }
+        },
+        userAuth(form:HTMLFormElement) {
+            authSignin.create(form.login.value,form.password.value).then(res=>{
+                if (res.status!==200) {
+                    const buttonBlock = document.querySelector(`.${authController.buttonBlock.class}`);
+                    let errorBlock = document.querySelector('.auth-window-btnArea__error');
+                    if (!errorBlock) {
+                        errorBlock = document.createElement('div');
+                        errorBlock.classList.add('auth-window-btnArea__error');
+                    }
+                    (buttonBlock as HTMLElement).prepend(errorBlock);
+                    errorBlock.textContent = JSON.parse(res.responseText).reason;
+                } else {
+                    router.go(ROUTE_LIST.CHATS);
+                }
+            })
+        }
     },
     events: [
         {
             type: 'submit',
             callback: function (event:Event) {
                 event.preventDefault();
-                const form = (event.target as HTMLFormElement).closest('form');
-                let submitError = false;
-                if (!form) {
-                    return;
-                }
-                Object.entries(authController.data).forEach(([key,item])=>{
-                    if ((item!==''&&!Validator.validate(<string>item,key))||item==='') {
-                        submitError = true;
-                        const element = <HTMLElement>form.querySelector(`input[name="${key}"]`);
-                        if (!element) {
-                            return;
-                        }
-                        const field = <HTMLElement>element.closest('.auth-window-field');
-                        if (!field) {
-                            return;
-                        }
-                        const error = <HTMLElement>field.querySelector('.auth-window-field__error');
-                        if (!error) {
-                            return;
-                        }
-                        error.style.opacity = '1';
-                    }
-                })
-                if (!submitError) {
-                    form.submit();
-                }
+                authController.methods.submitForm(event);
             }
         },
         {

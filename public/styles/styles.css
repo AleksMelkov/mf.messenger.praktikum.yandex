@@ -381,12 +381,13 @@ body {
     border-top-color: transparent;
 }
 .window-wrapper {
-    display: none;
+    /*display: none;*/
     position: absolute;
     top: 0;
     width: 100%;
     height: 100%;
     background: #ffffff;
+    z-index: 2000;
 }
 .window-wrapper-active {
     display: block;

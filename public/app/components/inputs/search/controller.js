@@ -20,8 +20,7 @@ export var searchController = {
                 else {
                     searchInput.dataset.placeholder = "⌕ Поиск...";
                 }
-                console.log(searchInput.textContent);
-                eventBus.emit(GLOBAL_EVENTS.SEARCH);
+                eventBus.emit(GLOBAL_EVENTS.SEARCH, { string: searchInput.textContent });
             }
         }
     ]

@@ -1,6 +1,3 @@
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
-var eventBus = new EventBus();
 export var favoriteController = {
     parent: {
         class: 'chats-wrapper__header-btn',
@@ -11,18 +8,17 @@ export var favoriteController = {
             callback: function (event) {
                 var block = event.target;
                 var button = block.closest("." + favoriteController.parent.class);
-                var eventType;
+                // let eventType:string;
                 if (button) {
                     if (button.classList.contains('chats-wrapper__header-btn-active')) {
                         console.log('Открываем скрытые чаты');
-                        eventType = 'hide';
+                        // eventType = 'hide';
                     }
                     else {
                         console.log('Получаем идентификатор чата с избранными сообщениями');
-                        eventType = 'show';
+                        // eventType = 'show';
                     }
                     button.classList.toggle('chats-wrapper__header-btn-active');
-                    eventBus.emit(GLOBAL_EVENTS.FAVORITE, { type: eventType, chat_id: 'd35emt0mj1bp' });
                 }
             }
         }

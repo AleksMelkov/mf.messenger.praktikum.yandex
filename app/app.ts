@@ -1,5 +1,5 @@
-import EventBus from "./EventBus.js";
-import { GLOBAL_EVENTS } from "./GlobalEvents.js";
+// import EventBus from "./EventBus.js";
+// import { GLOBAL_EVENTS } from "./GlobalEvents.js";
 
 import Button from "./components/buttons/Button.js";
 import { favoriteTmpl } from "./components/buttons/favorite/template.js";
@@ -65,7 +65,7 @@ import { profileFormController } from "./components/forms/profile_form/controlle
 
 import Validator from "./Validator.js";
 
-const eventBus = new EventBus();
+// const eventBus = new EventBus();
 
 class App {
 
@@ -73,7 +73,7 @@ class App {
 
     protected state:Record<string, any>;
 
-    protected _eventBus:EventBus;
+    // protected _eventBus:EventBus;
 
     constructor() {
         this.elements = {}
@@ -100,21 +100,21 @@ class App {
     }
 
     _initEvents() {
-        eventBus.on(GLOBAL_EVENTS.FAVORITE,this.favoriteEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.PROFILE,this.profileEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.SEARCH,this.searchEvent);
-        eventBus.on(GLOBAL_EVENTS.CHAT_ELEMENT,this.chatElementEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.TO_REGISTRATION,this.notAccountEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.FORGOT_PASS,this.forgotPassEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.PROFILE_RETURN,this.profileReturnEvent);
-        eventBus.on(GLOBAL_EVENTS.PROFILE_CHANGE,this.changeProfileEvent);
-        eventBus.on(GLOBAL_EVENTS.SAVE_PROFILE,this.profileSaveEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.PASS_CHANGE,this.passChangeEvent);
-        eventBus.on(GLOBAL_EVENTS.SAVE_PASS,this.passSaveEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.UPLOAD_ATTACH,this.uploadAttach);
-        eventBus.on(GLOBAL_EVENTS.SEND_MESSAGE,this.sendMessage);
-        eventBus.on(GLOBAL_EVENTS.PROFILE_DATA,this.profileDataEvent.bind(this))
-        eventBus.on(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY,this.profileSavePossibilityEvent.bind(this))
+        // eventBus.on(GLOBAL_EVENTS.FAVORITE,this.favoriteEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.PROFILE,this.profileEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.SEARCH,this.searchEvent);
+        // eventBus.on(GLOBAL_EVENTS.CHAT_ELEMENT,this.chatElementEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.TO_REGISTRATION,this.notAccountEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.FORGOT_PASS,this.forgotPassEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_RETURN,this.profileReturnEvent);
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_CHANGE,this.changeProfileEvent);
+        // eventBus.on(GLOBAL_EVENTS.SAVE_PROFILE,this.profileSaveEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.PASS_CHANGE,this.passChangeEvent);
+        // eventBus.on(GLOBAL_EVENTS.SAVE_PASS,this.passSaveEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.UPLOAD_ATTACH,this.uploadAttach);
+        // eventBus.on(GLOBAL_EVENTS.SEND_MESSAGE,this.sendMessage);
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_DATA,this.profileDataEvent.bind(this))
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY,this.profileSavePossibilityEvent.bind(this))
     }
 
     renderAuthForm() {
