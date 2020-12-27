@@ -1,6 +1,6 @@
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
-var eventBus = new EventBus();
+import Router from "../../../Router.js";
+import { ROUTE_LIST } from "../../../routes/routeList.js";
+var router = new Router();
 export var notAccountController = {
     parent: {
         class: 'auth-window-btnArea__smallBtn',
@@ -10,7 +10,7 @@ export var notAccountController = {
         {
             type: 'click',
             callback: function () {
-                eventBus.emit(GLOBAL_EVENTS.TO_REGISTRATION);
+                router.go(ROUTE_LIST.REGISTER);
             }
         }
     ]

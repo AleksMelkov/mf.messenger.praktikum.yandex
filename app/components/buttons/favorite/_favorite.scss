@@ -1,0 +1,24 @@
+.chats-wrapper__header-btn {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 100%;
+  font-size: 20px;
+  font-weight: 300;
+  color: #787878;
+  cursor: pointer;
+}
+.chats-wrapper__header-btn-active span {
+  color: $font-button-color;
+  font-weight: 400;
+}
+.chats-wrapper__header-btn:hover span {
+  color: $font-button-color;
+  font-weight: 400;
+}
+.chats-wrapper__header-btn i {
+  color: $main-color;
+  font-size: 20px;
+}
+.chats-wrapper__header-btn_ml_auto {
+  margin-left: auto;
+}

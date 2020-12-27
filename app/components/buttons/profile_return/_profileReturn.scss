@@ -1,0 +1,21 @@
+.profile-wrapper__return {
+  padding: 0 20px;
+  width: 50px;
+  background: $background-sidebar-color;
+  text-align: center;
+  cursor: pointer;
+}
+.profile-wrapper__return:before {
+  display: inline-block;
+  height: calc(50% - 55px);
+  vertical-align: middle;
+  content: "";
+}
+.profile-wrapper__return-btn {
+  margin: auto 0;
+  padding: 18px;
+  border-radius: 50%;
+  background: $main-color;
+  vertical-align: middle;
+  color: $background-color;
+}

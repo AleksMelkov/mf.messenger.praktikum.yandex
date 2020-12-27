@@ -1,4 +1,11 @@
 import Validator from "../../../Validator.js";
+import { AuthSignup } from "../../../api/auth-api.js";
+import Router from "../../../Router.js";
+
+import {ROUTE_LIST} from "../../../routes/routeList.js";
+
+const authSignup = new AuthSignup('/auth');
+const router = new Router();
 
 export const registrationController:Record<string, any> = {
     parent: {
@@ -70,35 +77,65 @@ export const registrationController:Record<string, any> = {
         password: '',
         repeat_password: '',
     },
+    methods:{
+        submitForm(event:Event) {
+            const form = (event.target as HTMLFormElement).closest('form');
+            if (!form) {
+                return;
+            }
+            let submitError = false;
+            Object.entries(registrationController.data).forEach(([key,item])=>{
+                if ((item!==''&&!Validator.validate(<string>item,key))||item==='') {
+                    submitError = true;
+                    (((form.querySelector(`input[name="${key}"]`) as HTMLInputElement)
+                        .closest('.auth-window-field') as HTMLElement)
+                        .querySelector('.auth-window-field__error') as HTMLElement)
+                        .style.opacity = '1';
+                }
+            });
+            if (registrationController.data.password!==registrationController.data.repeat_password) {
+                submitError = true;
+                (((form.querySelector('input[type="repeat_password"]') as HTMLInputElement)
+                    .closest('.auth-window-field') as HTMLElement)
+                    .querySelector('.auth-window-field__error') as HTMLElement)
+                    .style.opacity = '1';
+            }
+            if (!submitError) {
+                registrationController.methods.registerUser();
+            }
+        },
+        registerUser() {
+            authSignup.create(
+                registrationController.data.first_name,
+                registrationController.data.second_name,
+                registrationController.data.login,
+                registrationController.data.email,
+                registrationController.data.password,
+                '+79009009090'
+            ).then(res=>{
+                if (res.status!==200) {
+                    const buttonBlock = document.querySelector(`.${registrationController.buttonBlock.class}`);
+                    let errorBlock = document.querySelector('.auth-window-btnArea__error');
+                    if (!errorBlock) {
+                        errorBlock = document.createElement('div');
+                        errorBlock.classList.add('auth-window-btnArea__error');
+                    }
+                    (buttonBlock as HTMLElement).prepend(errorBlock);
+                    errorBlock.textContent = JSON.parse(res.responseText).reason;
+                } else {
+                    router.go(ROUTE_LIST.CHATS);
+                }
+            }).catch(()=>{
+                router.go(ROUTE_LIST.SERVER_ERROR);
+            })
+        }
+    },
     events: [
         {
             type: 'submit',
             callback: function (event:Event) {
                 event.preventDefault();
-                const form = (event.target as HTMLFormElement).closest('form');
-                if (!form) {
-                    return;
-                }
-                let submitError = false;
-                Object.entries(registrationController.data).forEach(([key,item])=>{
-                    if ((item!==''&&!Validator.validate(<string>item,key))||item==='') {
-                        submitError = true;
-                        (((form.querySelector(`input[name="${key}"]`) as HTMLInputElement)
-                            .closest('.auth-window-field') as HTMLElement)
-                            .querySelector('.auth-window-field__error') as HTMLElement)
-                            .style.opacity = '1';
-                    }
-                });
-                if (registrationController.data.password!==registrationController.data.repeat_password) {
-                    submitError = true;
-                    (((form.querySelector('input[type="repeat_password"]') as HTMLInputElement)
-                        .closest('.auth-window-field') as HTMLElement)
-                        .querySelector('.auth-window-field__error') as HTMLElement)
-                        .style.opacity = '1';
-                }
-                if (!submitError) {
-                    form.submit();
-                }
+                registrationController.methods.submitForm(event);
             }
         },
         {

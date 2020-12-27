@@ -1,7 +1,7 @@
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+import Router from "../../../Router.js";
+import { ROUTE_LIST} from "../../../routes/routeList.js";
 
-const eventBus = new EventBus();
+const router = new Router();
 
 export const notAccountController = {
     parent:{
@@ -12,7 +12,7 @@ export const notAccountController = {
         {
             type: 'click',
             callback: function () {
-                eventBus.emit(GLOBAL_EVENTS.TO_REGISTRATION);
+                router.go(ROUTE_LIST.REGISTER);
             }
         }
     ]

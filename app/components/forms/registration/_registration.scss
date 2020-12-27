@@ -1,0 +1,12 @@
+.register-window__title {
+  @extend %window-title;
+}
+.register-window__title {
+  padding-bottom: 25px;
+}
+.register-window-btnArea {
+  width: 100%;
+  margin-top: 12%;
+  bottom: 0;
+  text-align: center;
+}

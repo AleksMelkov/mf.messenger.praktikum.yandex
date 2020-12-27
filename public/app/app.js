@@ -1,5 +1,21 @@
-import EventBus from "./EventBus.js";
-import { GLOBAL_EVENTS } from "./GlobalEvents.js";
+// import EventBus from "./EventBus.js";
+// import { GLOBAL_EVENTS } from "./GlobalEvents.js";
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 import Button from "./components/buttons/Button.js";
 import { favoriteTmpl } from "./components/buttons/favorite/template.js";
 import { favoriteController } from "./components/buttons/favorite/controller.js";
@@ -58,8 +74,9 @@ import { registrationController } from "./components/forms/registration/controll
 import { profileFormTemplate } from "./components/forms/profile_form/template.js";
 import { profileFormController } from "./components/forms/profile_form/controller.js";
 import Validator from "./Validator.js";
-var eventBus = new EventBus();
+// const eventBus = new EventBus();
 var App = /** @class */ (function () {
+    // protected _eventBus:EventBus;
     function App() {
         this.elements = {};
         this.state = {
@@ -84,21 +101,21 @@ var App = /** @class */ (function () {
         }
     };
     App.prototype._initEvents = function () {
-        eventBus.on(GLOBAL_EVENTS.FAVORITE, this.favoriteEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.PROFILE, this.profileEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.SEARCH, this.searchEvent);
-        eventBus.on(GLOBAL_EVENTS.CHAT_ELEMENT, this.chatElementEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.TO_REGISTRATION, this.notAccountEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.FORGOT_PASS, this.forgotPassEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.PROFILE_RETURN, this.profileReturnEvent);
-        eventBus.on(GLOBAL_EVENTS.PROFILE_CHANGE, this.changeProfileEvent);
-        eventBus.on(GLOBAL_EVENTS.SAVE_PROFILE, this.profileSaveEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.PASS_CHANGE, this.passChangeEvent);
-        eventBus.on(GLOBAL_EVENTS.SAVE_PASS, this.passSaveEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.UPLOAD_ATTACH, this.uploadAttach);
-        eventBus.on(GLOBAL_EVENTS.SEND_MESSAGE, this.sendMessage);
-        eventBus.on(GLOBAL_EVENTS.PROFILE_DATA, this.profileDataEvent.bind(this));
-        eventBus.on(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY, this.profileSavePossibilityEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.FAVORITE,this.favoriteEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.PROFILE,this.profileEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.SEARCH,this.searchEvent);
+        // eventBus.on(GLOBAL_EVENTS.CHAT_ELEMENT,this.chatElementEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.TO_REGISTRATION,this.notAccountEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.FORGOT_PASS,this.forgotPassEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_RETURN,this.profileReturnEvent);
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_CHANGE,this.changeProfileEvent);
+        // eventBus.on(GLOBAL_EVENTS.SAVE_PROFILE,this.profileSaveEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.PASS_CHANGE,this.passChangeEvent);
+        // eventBus.on(GLOBAL_EVENTS.SAVE_PASS,this.passSaveEvent.bind(this));
+        // eventBus.on(GLOBAL_EVENTS.UPLOAD_ATTACH,this.uploadAttach);
+        // eventBus.on(GLOBAL_EVENTS.SEND_MESSAGE,this.sendMessage);
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_DATA,this.profileDataEvent.bind(this))
+        // eventBus.on(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY,this.profileSavePossibilityEvent.bind(this))
     };
     App.prototype.renderAuthForm = function () {
         this.elements.authForm = new Form(authController, authTmpl);
@@ -186,7 +203,7 @@ var App = /** @class */ (function () {
         if (!parent) {
             return;
         }
-        var node = parent.querySelector("." + this.elements.headerName.props.parent.class);
+        var node = parent.querySelector("." + this.elements.headerName.props.class);
         if (node) {
             //Удалять элементы плохо, но у меня 0 идей, как это сделать без innerHtml и удаления элементов
             parent.removeChild(node);
@@ -309,7 +326,7 @@ var App = /** @class */ (function () {
         document.querySelector('.main-content__header-info').classList.remove('main-content__header-info__hide');
         this.state.activeChat = chat;
         this.elements.headerName.setProps({
-            name: this.state.activeChat.name
+            text: this.state.activeChat.name
         });
         this.renderHeaderName();
         this.renderChatSetting();
@@ -350,7 +367,7 @@ var App = /** @class */ (function () {
     App.prototype.profileSaveEvent = function () {
         var error = false;
         Object.entries(this.state.user.common).forEach(function (_a) {
-            var key = _a[0], item = _a[1];
+            var _b = __read(_a, 2), key = _b[0], item = _b[1];
             if (!Validator.validate(item, key)) {
                 error = true;
                 document.querySelector(".profile-wrapper-form__element-input[name=\"" + key + "\"]")

@@ -1,4 +1,25 @@
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 import Validator from "../../../Validator.js";
+import { AuthSignup } from "../../../api/auth-api.js";
+import Router from "../../../Router.js";
+import { ROUTE_LIST } from "../../../routes/routeList.js";
+var authSignup = new AuthSignup('/auth');
+var router = new Router();
 export var registrationController = {
     parent: {
         name: 'form',
@@ -69,36 +90,60 @@ export var registrationController = {
         password: '',
         repeat_password: '',
     },
+    methods: {
+        submitForm: function (event) {
+            var form = event.target.closest('form');
+            if (!form) {
+                return;
+            }
+            var submitError = false;
+            Object.entries(registrationController.data).forEach(function (_a) {
+                var _b = __read(_a, 2), key = _b[0], item = _b[1];
+                if ((item !== '' && !Validator.validate(item, key)) || item === '') {
+                    submitError = true;
+                    form.querySelector("input[name=\"" + key + "\"]")
+                        .closest('.auth-window-field')
+                        .querySelector('.auth-window-field__error')
+                        .style.opacity = '1';
+                }
+            });
+            if (registrationController.data.password !== registrationController.data.repeat_password) {
+                submitError = true;
+                form.querySelector('input[type="repeat_password"]')
+                    .closest('.auth-window-field')
+                    .querySelector('.auth-window-field__error')
+                    .style.opacity = '1';
+            }
+            if (!submitError) {
+                registrationController.methods.registerUser();
+            }
+        },
+        registerUser: function () {
+            authSignup.create(registrationController.data.first_name, registrationController.data.second_name, registrationController.data.login, registrationController.data.email, registrationController.data.password, '+79009009090').then(function (res) {
+                if (res.status !== 200) {
+                    var buttonBlock = document.querySelector("." + registrationController.buttonBlock.class);
+                    var errorBlock = document.querySelector('.auth-window-btnArea__error');
+                    if (!errorBlock) {
+                        errorBlock = document.createElement('div');
+                        errorBlock.classList.add('auth-window-btnArea__error');
+                    }
+                    buttonBlock.prepend(errorBlock);
+                    errorBlock.textContent = JSON.parse(res.responseText).reason;
+                }
+                else {
+                    router.go(ROUTE_LIST.CHATS);
+                }
+            }).catch(function () {
+                router.go(ROUTE_LIST.SERVER_ERROR);
+            });
+        }
+    },
     events: [
         {
             type: 'submit',
             callback: function (event) {
                 event.preventDefault();
-                var form = event.target.closest('form');
-                if (!form) {
-                    return;
-                }
-                var submitError = false;
-                Object.entries(registrationController.data).forEach(function (_a) {
-                    var key = _a[0], item = _a[1];
-                    if ((item !== '' && !Validator.validate(item, key)) || item === '') {
-                        submitError = true;
-                        form.querySelector("input[name=\"" + key + "\"]")
-                            .closest('.auth-window-field')
-                            .querySelector('.auth-window-field__error')
-                            .style.opacity = '1';
-                    }
-                });
-                if (registrationController.data.password !== registrationController.data.repeat_password) {
-                    submitError = true;
-                    form.querySelector('input[type="repeat_password"]')
-                        .closest('.auth-window-field')
-                        .querySelector('.auth-window-field__error')
-                        .style.opacity = '1';
-                }
-                if (!submitError) {
-                    form.submit();
-                }
+                registrationController.methods.submitForm(event);
             }
         },
         {

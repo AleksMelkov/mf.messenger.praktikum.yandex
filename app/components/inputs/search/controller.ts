@@ -1,8 +1,7 @@
 import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+import { GLOBAL_EVENTS} from "../../../GlobalEvents.js";
 
 const eventBus = new EventBus();
-
 export const searchController = {
     parent: {
         class: 'contenteditable',
@@ -21,8 +20,7 @@ export const searchController = {
                 } else {
                     searchInput.dataset.placeholder = "⌕ Поиск...";
                 }
-                console.log(searchInput.textContent);
-                eventBus.emit(GLOBAL_EVENTS.SEARCH)
+                eventBus.emit(GLOBAL_EVENTS.SEARCH,{string:searchInput.textContent});
             }
         }
     ]

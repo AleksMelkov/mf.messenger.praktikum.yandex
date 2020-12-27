@@ -1,7 +1,8 @@
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+import Router from "../../../Router.js";
+import { ROUTE_LIST} from "../../../routes/routeList.js";
 
-const eventBus = new EventBus();
+const router = new Router();
+
 
 export const profileController = {
     parent: {
@@ -11,8 +12,9 @@ export const profileController = {
         {
             type: 'click',
             callback: function () {
-                console.log('Получаем данные по профилю пользователя');
-                eventBus.emit(GLOBAL_EVENTS.PROFILE);
+                (document.querySelector('.chats-wrapper__control-panel') as HTMLElement).remove();
+                (document.querySelector('.chats-wrapper__search-panel') as HTMLElement).remove();
+                router.go(ROUTE_LIST.PROFILE);
             }
         }
     ]

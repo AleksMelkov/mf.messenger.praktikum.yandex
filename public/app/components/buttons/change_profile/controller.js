@@ -1,6 +1,3 @@
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
-var eventBus = new EventBus();
 export var changeProfileController = {
     parent: {
         class: 'profile-wrapper-form__element',
@@ -9,8 +6,16 @@ export var changeProfileController = {
         {
             type: 'click',
             callback: function () {
-                console.log('Изменить данные');
-                eventBus.emit(GLOBAL_EVENTS.PROFILE_CHANGE);
+                var elements = document.querySelectorAll('.profile-wrapper-form__element[type="common"]');
+                Array.from(elements).forEach(function (item) {
+                    if (item.classList.contains('profile-wrapper-form__element_hide'))
+                        item.style.display = 'none';
+                    if (!item.classList.contains('profile-wrapper-form__element_hide') &&
+                        !item.classList.contains('profile-wrapper-form__element_save'))
+                        item.querySelector('.profile-wrapper-form__element-input').setAttribute('contenteditable', 'true');
+                    if (item.classList.contains('profile-wrapper-form__element_save'))
+                        item.style.display = 'block';
+                });
             }
         }
     ]

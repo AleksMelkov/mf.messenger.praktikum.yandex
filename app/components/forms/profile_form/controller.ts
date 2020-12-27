@@ -1,9 +1,10 @@
 import Validator from "../../../Validator.js";
 import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS } from "../../../GlobalEvents.js";
+import { GLOBAL_EVENTS} from "../../../GlobalEvents.js";
+import Store from "../../../Store.js";
+import { getArrayElement } from "../../../utils/getArrayElement.js";
 
 const eventBus = new EventBus();
-
 
 export const profileFormController:Record<string, any> = {
     parent: {
@@ -98,6 +99,46 @@ export const profileFormController:Record<string, any> = {
         new_password:'',
         repeat_password:'',
     },
+    store: new Store(),
+    mount() {
+        eventBus.on(GLOBAL_EVENTS.SAVE_PROFILE,profileFormController.methods.submitProfile.bind(profileFormController))
+        profileFormController.methods.getUserInfo();
+    },
+    methods: {
+        submitProfile() {
+            let error = false;
+            Object.entries(this.state.user.common).forEach(([key,item])=>{
+                if (!Validator.validate(<string>item,key)) {
+                    error = true;
+                    ((document.querySelector(`.profile-wrapper-form__element-input[name="${key}"]`) as HTMLElement)
+                        .closest('.profile-wrapper-form__element[type="common"]') as HTMLElement)
+                        .style.borderColor = 'red';
+                }
+            });
+            if (!error&&this.state.formSavePossibility) {
+                let fields = document.querySelectorAll('.profile-wrapper-form__element[type="common"]');
+                fields.forEach((item:HTMLElement)=>{
+                    if (item.classList.contains('profile-wrapper-form__element_hide')) item.style.display = 'flex';
+                    if (
+                        !item.classList.contains('profile-wrapper-form__element_hide') &&
+                        !item.classList.contains('profile-wrapper-form__element_save')
+                    ) (item.querySelector('.profile-wrapper-form__element-input') as HTMLElement).setAttribute('contenteditable','false');
+                    if (item.classList.contains('profile-wrapper-form__element_save')) item.style.display = 'none';
+                });
+                console.log(this.state.user.common);
+            }
+        },
+        getUserInfo() {
+            const store = new Store();
+
+            Object.keys(store.value.user).forEach(key=>{
+                const element = getArrayElement(profileFormController.elements,'name',key)[0];
+                if (element)
+
+                    element.placeholder = store.value.user[key];
+            })
+        },
+    },
     events: [
         {
             type: 'focusout',
@@ -111,19 +152,14 @@ export const profileFormController:Record<string, any> = {
                     return;
                 }
                 if (input.textContent&&input.textContent!==''&&Validator.validate(input,<string>input.getAttribute('name'))) {
-                    let content;
-                    if (input.textContent.match(/·/)) {
-                        content = profileFormController.password[<string>input.getAttribute('name')]
-                    } else {
-                        content = input.textContent;
+                    if (!input.textContent.match(/·/)) {
+                        const name = (input as HTMLDivElement).getAttribute('name');
+                       profileFormController.user[(name as string)] = input.textContent
                     }
-                    eventBus.emit(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY,true);
-                    eventBus.emit(GLOBAL_EVENTS.PROFILE_DATA,parent.getAttribute('type'),input.getAttribute('name'),content);
                 } else {
                     parent.style.borderColor = 'red';
-                    eventBus.emit(GLOBAL_EVENTS.PROFILE_SAVE_POSSIBILITY,false);
                 }
-
+                console.log(profileFormController.user)
             }
         },
         {
@@ -134,7 +170,6 @@ export const profileFormController:Record<string, any> = {
                     return;
                 }
                 (input.closest('.profile-wrapper-form__element') as HTMLElement).style.borderColor = '#CECECE';
-                console.log(`Поле ${input.getAttribute('name')} получило фокус`)
             }
         },
         {
