@@ -1,5 +1,6 @@
+import { ControllerType } from "../../controllerType.js";
 import Validator from "../../../Validator.js";
-import { AuthSignup } from "../../../api/auth-api.js";
+import { AuthSignup } from "../../../api/authApi.js";
 import Router from "../../../Router.js";
 
 import {ROUTE_LIST} from "../../../routes/routeList.js";
@@ -7,7 +8,7 @@ import {ROUTE_LIST} from "../../../routes/routeList.js";
 const authSignup = new AuthSignup('/auth');
 const router = new Router();
 
-export const registrationController:Record<string, any> = {
+export const registrationController:ControllerType = {
     parent: {
         name: 'form',
         class: 'auth-window',
@@ -79,48 +80,74 @@ export const registrationController:Record<string, any> = {
     },
     methods:{
         submitForm(event:Event) {
-            const form = (event.target as HTMLFormElement).closest('form');
+            const target = <HTMLFormElement>event.target;
+            const form = target.closest('form');
             if (!form) {
                 return;
             }
             let submitError = false;
+            if (!registrationController.data) {
+                return;
+            }
             Object.entries(registrationController.data).forEach(([key,item])=>{
                 if ((item!==''&&!Validator.validate(<string>item,key))||item==='') {
                     submitError = true;
-                    (((form.querySelector(`input[name="${key}"]`) as HTMLInputElement)
-                        .closest('.auth-window-field') as HTMLElement)
-                        .querySelector('.auth-window-field__error') as HTMLElement)
-                        .style.opacity = '1';
+                    const input = <HTMLInputElement|null>form.querySelector(`input[name="${key}"]`);
+                    if (!input) {
+                        return;
+                    }
+                    const field = input.closest('.auth-window-field');
+                    if (!field) {
+                        return;
+                    }
+                    const fieldError = <HTMLElement|null>field.querySelector('.auth-window-field__error');
+                    if (fieldError) fieldError.style.opacity = '1';
                 }
             });
             if (registrationController.data.password!==registrationController.data.repeat_password) {
                 submitError = true;
-                (((form.querySelector('input[type="repeat_password"]') as HTMLInputElement)
-                    .closest('.auth-window-field') as HTMLElement)
-                    .querySelector('.auth-window-field__error') as HTMLElement)
-                    .style.opacity = '1';
+                const input = <HTMLInputElement|null>form.querySelector('input[type="repeat_password"]');
+                if (!input) {
+                    return;
+                }
+                const field = input.closest('.auth-window-field');
+                if (!field) {
+                    return;
+                }
+                const fieldError = <HTMLElement|null>field.querySelector('.auth-window-field__error');
+                if (fieldError) fieldError.style.opacity = '1';
             }
-            if (!submitError) {
+            if (!submitError&&registrationController.methods) {
                 registrationController.methods.registerUser();
             }
         },
         registerUser() {
-            authSignup.create(
-                registrationController.data.first_name,
-                registrationController.data.second_name,
-                registrationController.data.login,
-                registrationController.data.email,
-                registrationController.data.password,
-                '+79009009090'
-            ).then(res=>{
+            if (!registrationController.data) {
+                return;
+            }
+            const data = {
+                first_name:registrationController.data.first_name,
+                second_name:registrationController.data.second_name,
+                login:registrationController.data.login,
+                email:registrationController.data.email,
+                password:registrationController.data.password,
+                phone:'+79009009090'
+            }
+            authSignup.create(data).then(res=>{
                 if (res.status!==200) {
+                    if (!registrationController.buttonBlock) {
+                        return;
+                    }
                     const buttonBlock = document.querySelector(`.${registrationController.buttonBlock.class}`);
                     let errorBlock = document.querySelector('.auth-window-btnArea__error');
                     if (!errorBlock) {
                         errorBlock = document.createElement('div');
+                        if (!errorBlock) {
+                            return;
+                        }
                         errorBlock.classList.add('auth-window-btnArea__error');
                     }
-                    (buttonBlock as HTMLElement).prepend(errorBlock);
+                    if (buttonBlock) buttonBlock.prepend(errorBlock);
                     errorBlock.textContent = JSON.parse(res.responseText).reason;
                 } else {
                     router.go(ROUTE_LIST.CHATS);
@@ -135,22 +162,31 @@ export const registrationController:Record<string, any> = {
             type: 'submit',
             callback: function (event:Event) {
                 event.preventDefault();
-                registrationController.methods.submitForm(event);
+                if (registrationController.methods) registrationController.methods.submitForm(event);
+
             }
         },
         {
             type: 'focusout',
             callback: function (event:Event) {
-                let input:HTMLInputElement|null = (event.target as HTMLInputElement).closest('input')
+                const target = <HTMLElement>event.target;
+                const input = target.closest('input')
                 if (!input) {
                     return;
                 }
-                const header:HTMLElement|null = (input.closest('.auth-window-field') as HTMLElement).querySelector('.auth-window-field__title');
+                const field = input.closest('.auth-window-field');
+                if (!field) {
+                    return;
+                }
+                const header= field.querySelector('.auth-window-field__title');
                 if (!header) {
                     return
                 }
-                const error:HTMLElement|null = (input.closest('.auth-window-field') as HTMLElement).querySelector('.auth-window-field__error');
+                const error = <HTMLElement|null>field.querySelector('.auth-window-field__error');
                 if (!error) {
+                    return;
+                }
+                if (!registrationController.data) {
                     return;
                 }
                 if (input.value==='') {
@@ -176,15 +212,20 @@ export const registrationController:Record<string, any> = {
         {
             type: 'focusin',
             callback: function (event:Event) {
-                let input = (event.target as HTMLInputElement).closest('input')
+                const target = <HTMLElement>event.target
+                const input = target.closest('input')
                 if (!input) {
                     return
                 }
-                const header:HTMLElement|null = (input.closest('.auth-window-field') as HTMLElement).querySelector('.auth-window-field__title');
+                const field = input.closest('.auth-window-field');
+                if (!field) {
+                    return;
+                }
+                const header = field.querySelector('.auth-window-field__title');
                 if (!header) {
                     return;
                 }
-                const error:HTMLElement|null = (input.closest('.auth-window-field') as HTMLElement).querySelector('.auth-window-field__error');
+                const error = <HTMLElement|null>field.querySelector('.auth-window-field__error');
                 if (!error) {
                     return;
                 }

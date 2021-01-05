@@ -14,5 +14,11 @@
     "lib": ["es6", "dom", "es2017"],
     "outDir": "./public/"
   },
-  "exclude":["node_modules"]
+  "exclude":["node_modules"],
+  "plugins": [
+    {
+      "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
+      "after": true
+    }
+  ]
 }

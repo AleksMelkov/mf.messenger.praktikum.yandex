@@ -1,13 +1,14 @@
+import { ControllerType } from "../../controllerType.js";
 import Validator from "../../../Validator.js";
 import Router from "../../../Router.js";
-import { AuthSignin } from "../../../api/auth-api.js";
+import { AuthSignin } from "../../../api/authApi.js";
 
 import { ROUTE_LIST } from "../../../routes/routeList.js";
 
 const router = new Router();
 const authSignin = new AuthSignin('/auth');
 
-export const authController:Record<string, any> = {
+export const authController:ControllerType = {
     parent: {
         name: 'form',
         class: 'auth-window',
@@ -43,47 +44,73 @@ export const authController:Record<string, any> = {
     },
     methods: {
         submitForm(event:Event) {
-            const form = (event.target as HTMLFormElement).closest('form');
+            const target = <HTMLFormElement>event.target;
+            const form = target.closest('form');
             let submitError = false;
             if (!form) {
+                return;
+            }
+            if (!authController.data) {
                 return;
             }
             Object.entries(authController.data).forEach(([key,item])=>{
                 if ((item!==''&&!Validator.validate(<string>item,key))||item==='') {
                     submitError = true;
-                    const element = <HTMLElement>form.querySelector(`input[name="${key}"]`);
+                    const element = form.querySelector(`input[name="${key}"]`);
                     if (!element) {
                         return;
                     }
-                    const field = <HTMLElement>element.closest('.auth-window-field');
+                    const field = element.closest('.auth-window-field');
                     if (!field) {
                         return;
                     }
-                    const error = <HTMLElement>field.querySelector('.auth-window-field__error');
+                    const error = <HTMLElement|null>field.querySelector('.auth-window-field__error');
                     if (!error) {
                         return;
                     }
                     error.style.opacity = '1';
                 }
             })
-            if (!submitError) {
+            if (!submitError&&authController.methods) {
                 authController.methods.userAuth(form);
             }
         },
         userAuth(form:HTMLFormElement) {
-            authSignin.create(form.login.value,form.password.value).then(res=>{
+            const data = {
+                login: form.login.value,
+                password: form.password.value,
+            };
+            authSignin.create(data).then(res=>{
                 if (res.status!==200) {
+                    if (!authController.buttonBlock) {
+                        return;
+                    }
                     const buttonBlock = document.querySelector(`.${authController.buttonBlock.class}`);
                     let errorBlock = document.querySelector('.auth-window-btnArea__error');
                     if (!errorBlock) {
                         errorBlock = document.createElement('div');
+                        if (!errorBlock) {
+                            return;
+                        }
                         errorBlock.classList.add('auth-window-btnArea__error');
                     }
-                    (buttonBlock as HTMLElement).prepend(errorBlock);
+                    if(buttonBlock instanceof HTMLElement)
+                        buttonBlock.prepend(errorBlock);
+                    if (JSON.parse(res.responseText).reason==='user already in system') {
+                        const windowWrapper = document.querySelector('.window-wrapper');
+                        if (windowWrapper)
+                            windowWrapper.remove();
+                        router.go(ROUTE_LIST.CHATS);
+                    }
                     errorBlock.textContent = JSON.parse(res.responseText).reason;
                 } else {
+                    const windowWrapper = document.querySelector('.window-wrapper');
+                    if (windowWrapper)
+                        windowWrapper.remove();
                     router.go(ROUTE_LIST.CHATS);
                 }
+            }).catch(()=>{
+                router.go(ROUTE_LIST.SERVER_ERROR)
             })
         }
     },
@@ -92,13 +119,14 @@ export const authController:Record<string, any> = {
             type: 'submit',
             callback: function (event:Event) {
                 event.preventDefault();
-                authController.methods.submitForm(event);
+                if (authController.methods) authController.methods.submitForm(event);
             }
         },
         {
             type: 'focusout',
             callback: function (event:Event) {
-                const input = (event.target as HTMLInputElement).closest('input');
+                const target = <HTMLInputElement>event.target;
+                const input = target.closest('input');
                 if (!input) {
                     return;
                 }
@@ -112,6 +140,9 @@ export const authController:Record<string, any> = {
                 }
                 const error = <HTMLElement>field.querySelector('.auth-window-field__error');
                 if (!error) {
+                    return;
+                }
+                if (!authController.data) {
                     return;
                 }
                 if (input.value==='') {
@@ -136,7 +167,8 @@ export const authController:Record<string, any> = {
         {
             type: 'focusin',
             callback: function (event:Event) {
-                const input = (event.target as HTMLInputElement).closest('input');
+                const target = <HTMLInputElement>event.target;
+                const input = target.closest('input');
                 if (!input) {
                     return;
                 }

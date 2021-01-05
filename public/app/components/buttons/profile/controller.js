@@ -9,8 +9,12 @@ export var profileController = {
         {
             type: 'click',
             callback: function () {
-                document.querySelector('.chats-wrapper__control-panel').remove();
-                document.querySelector('.chats-wrapper__search-panel').remove();
+                var controlPanel = document.querySelector('.chats-wrapper__control-panel');
+                if (controlPanel)
+                    controlPanel.remove();
+                var searchPanel = document.querySelector('.chats-wrapper__search-panel');
+                if (searchPanel)
+                    searchPanel.remove();
                 router.go(ROUTE_LIST.PROFILE);
             }
         }

@@ -5,7 +5,7 @@ import { getElementById } from "../getElementById";
 import {it} from "mocha";
 
 describe("getElementById", function () {
-    const array:object[] = [
+    const array = [
         {
             id: 'pb6m8452xemf',
             class: 'chat-list__element',
@@ -27,10 +27,6 @@ describe("getElementById", function () {
             count: 2
         },
     ];
-
-    it("Второй параметр должен быть массивом", function () {
-        assert(Array.isArray(array),"Второй параметр не массив")
-    });
 
     it("Ищем элемент массива - идентично", function () {
         assert.deepEqual(getElementById('pb6m8452xemf',array)[0],array[0],"Найден не тот элемент массива")

@@ -38,8 +38,8 @@ body {
 }
 
 @import "./forms/auth/auth";
-@import "./buttons/auth_submit/auth_submit";
-@import "./buttons/forgot_pass/forgot_pass";
+@import "./buttons/authSubmit/authSubmit";
+@import "./buttons/forgotPass/forgotPass";
 
 @import "./forms/registration/registration";
 
@@ -59,7 +59,25 @@ body {
   flex-wrap: wrap;
   padding: 20px 10px;
 }
+.chats-search {
+  display: none;
+  position: absolute;
+  width: 500px;
+  left: calc(50% - 250px);
+  top: 200px;
+  border: 1px solid #cecece;
+  background: $background-color;
+  overflow: hidden;
+}
+.chats-search__header {
+  margin: 0 15px;
+  padding: 15px 5px;
+  border-bottom: 1px solid $main-color-accent;
+  font-weight: 500;
+}
 
+@import "./buttons/newChat/newChat";
+@import "./list/chatAdding/chatAdd";
 @import "./buttons/favorite/favorite";
 @import "./inputs/search/search";
 @import "./list/chats/chats";
@@ -86,7 +104,67 @@ body {
   text-align: center;
 }
 
-@import "./buttons/profile_return/profileReturn";
-@import "./buttons/change_avatar/changeAvatar";
-@import "./content/profile_header/profileHeader";
-@import "./forms/profile_form/profileForm";
+@import "./buttons/profileReturn/profileReturn";
+@import "./buttons/changeAvatar/changeAvatar";
+@import "./content/profileHeader/profileHeader";
+@import "./forms/profileForm/profileForm";
+
+.chats-wrapper__main-content {
+  margin: 0 20px;
+  width: calc(100% - 480px - 40px);
+  height: 100%;
+  position: relative;
+}
+.chats-wrapper__empty-content {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  top: calc(50% - 20px/2);
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 19px;
+  color: #787878;
+  text-align: center;
+}
+.main-content__header-info {
+  padding: 20px 10px 20px 10px;
+  border-bottom: 1px solid #CECECE;
+  display: flex;
+  flex-direction: row;
+}
+.main-content__header-info__hide {
+  display: none;
+}
+@import "./content/headerContent/headerContent";
+@import "./list/chatSettings/chatSettings";
+.error-wrapper {
+  height: 100vh;
+  background: #E5E5E5;
+}
+.error-wrapper-content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 500px;
+  height: 200px;
+  left: calc(50% - 500px/2);
+  top: calc(50% - 200px/2);
+}
+.error-wrapper-content__header {
+  text-align: center;
+}
+.error-wrapper-content__text {
+  text-align: center;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 23px;
+}
+.error-wrapper-content__link {
+  padding-top: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  color: #1A7749;
+}

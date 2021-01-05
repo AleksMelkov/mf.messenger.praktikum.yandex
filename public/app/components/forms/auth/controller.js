@@ -16,7 +16,7 @@ var __read = (this && this.__read) || function (o, n) {
 };
 import Validator from "../../../Validator.js";
 import Router from "../../../Router.js";
-import { AuthSignin } from "../../../api/auth-api.js";
+import { AuthSignin } from "../../../api/authApi.js";
 import { ROUTE_LIST } from "../../../routes/routeList.js";
 var router = new Router();
 var authSignin = new AuthSignin('/auth');
@@ -56,9 +56,13 @@ export var authController = {
     },
     methods: {
         submitForm: function (event) {
-            var form = event.target.closest('form');
+            var target = event.target;
+            var form = target.closest('form');
             var submitError = false;
             if (!form) {
+                return;
+            }
+            if (!authController.data) {
                 return;
             }
             Object.entries(authController.data).forEach(function (_a) {
@@ -80,25 +84,47 @@ export var authController = {
                     error.style.opacity = '1';
                 }
             });
-            if (!submitError) {
+            if (!submitError && authController.methods) {
                 authController.methods.userAuth(form);
             }
         },
         userAuth: function (form) {
-            authSignin.create(form.login.value, form.password.value).then(function (res) {
+            var data = {
+                login: form.login.value,
+                password: form.password.value,
+            };
+            authSignin.create(data).then(function (res) {
                 if (res.status !== 200) {
+                    if (!authController.buttonBlock) {
+                        return;
+                    }
                     var buttonBlock = document.querySelector("." + authController.buttonBlock.class);
                     var errorBlock = document.querySelector('.auth-window-btnArea__error');
                     if (!errorBlock) {
                         errorBlock = document.createElement('div');
+                        if (!errorBlock) {
+                            return;
+                        }
                         errorBlock.classList.add('auth-window-btnArea__error');
                     }
-                    buttonBlock.prepend(errorBlock);
+                    if (buttonBlock instanceof HTMLElement)
+                        buttonBlock.prepend(errorBlock);
+                    if (JSON.parse(res.responseText).reason === 'user already in system') {
+                        var windowWrapper = document.querySelector('.window-wrapper');
+                        if (windowWrapper)
+                            windowWrapper.remove();
+                        router.go(ROUTE_LIST.CHATS);
+                    }
                     errorBlock.textContent = JSON.parse(res.responseText).reason;
                 }
                 else {
+                    var windowWrapper = document.querySelector('.window-wrapper');
+                    if (windowWrapper)
+                        windowWrapper.remove();
                     router.go(ROUTE_LIST.CHATS);
                 }
+            }).catch(function () {
+                router.go(ROUTE_LIST.SERVER_ERROR);
             });
         }
     },
@@ -107,13 +133,15 @@ export var authController = {
             type: 'submit',
             callback: function (event) {
                 event.preventDefault();
-                authController.methods.submitForm(event);
+                if (authController.methods)
+                    authController.methods.submitForm(event);
             }
         },
         {
             type: 'focusout',
             callback: function (event) {
-                var input = event.target.closest('input');
+                var target = event.target;
+                var input = target.closest('input');
                 if (!input) {
                     return;
                 }
@@ -127,6 +155,9 @@ export var authController = {
                 }
                 var error = field.querySelector('.auth-window-field__error');
                 if (!error) {
+                    return;
+                }
+                if (!authController.data) {
                     return;
                 }
                 if (input.value === '') {
@@ -152,7 +183,8 @@ export var authController = {
         {
             type: 'focusin',
             callback: function (event) {
-                var input = event.target.closest('input');
+                var target = event.target;
+                var input = target.closest('input');
                 if (!input) {
                     return;
                 }

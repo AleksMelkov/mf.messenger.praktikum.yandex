@@ -1,8 +1,8 @@
-import HTTPTransport from "../../../HTTPTransport.js";
 import Router from "../../../Router.js";
 import { ROUTE_LIST } from "../../../routes/routeList.js";
-var http = new HTTPTransport();
+import { AuthLogout } from "../../../api/auth-api.js";
 var router = new Router();
+var logout = new AuthLogout('/auth');
 export var exitProfileController = {
     parent: {
         class: 'profile-wrapper-form__element',
@@ -11,8 +11,8 @@ export var exitProfileController = {
         {
             type: 'click',
             callback: function () {
-                http.post('/auth/logout').then(function (res) {
-                    if (res.status === 200) {
+                logout.create().then(function (res) {
+                    if (res.status >= 200 && res.status <= 400) {
                         document.querySelector('.profile-wrapper').remove();
                         router.go(ROUTE_LIST.AUTH);
                     }

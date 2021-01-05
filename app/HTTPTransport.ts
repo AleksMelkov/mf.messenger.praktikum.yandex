@@ -23,23 +23,23 @@ export default class HTTPTransport {
         this._baseUrl = url;
     }
 
-    public get = (url:string, options = {}) => {
-        return this.request(this._baseUrl+url, {...options, method: METHODS.GET});
+    public get = (url:string, options = {},isJson:boolean=false) => {
+        return this.request(this._baseUrl+url, {...options, method: METHODS.GET},isJson);
     }
 
-    public post = (url:string, options = {}) => {
-        return this.request(this._baseUrl+url, {...options, method: METHODS.POST});
+    public post = (url:string, options = {},isJson:boolean=false) => {
+        return this.request(this._baseUrl+url, {...options, method: METHODS.POST},isJson);
     }
 
-    public put = (url:string, options = {}) => {
-        return this.request(this._baseUrl+url, {...options, method: METHODS.PUT});
+    public put = (url:string, options = {},isJson:boolean=false) => {
+        return this.request(this._baseUrl+url, {...options, method: METHODS.PUT},isJson);
     }
 
-    public delete = (url:string, options = {}) => {
-        return this.request(this._baseUrl+url, {...options, method: METHODS.DELETE});
+    public delete = (url:string, options = {},isJson:boolean=false) => {
+        return this.request(this._baseUrl+url, {...options, method: METHODS.DELETE},isJson);
     }
 
-    public fetchWithRetry(url:string, options: Options) {
+    public fetchWithRetry(url:string, options: Options,isJson:boolean=false) {
         const {retries=1} = options;
 
         function onError(err:Error) {
@@ -47,12 +47,12 @@ export default class HTTPTransport {
             if (!triesLeft) {
                 throw err;
             }
-            return this.fetchWithRetry(url, {...options, retries: triesLeft});
+            return this.fetchWithRetry(url, {...options, retries: triesLeft},isJson);
         }
-        return this.request(this._baseUrl+url,options).catch(onError);
+        return this.request(this._baseUrl+url,options,isJson).catch(onError);
     }
 
-    protected request(url: string, options: Options , timeout = 5000): Promise<XMLHttpRequest> {
+    protected request(url: string, options: Options, isJson:boolean, timeout = 5000): Promise<XMLHttpRequest> {
         const {headers, method, data} = options;
 
         return new Promise((resolve, reject) => {
@@ -73,6 +73,10 @@ export default class HTTPTransport {
             }
 
             xhr.withCredentials = true;
+
+            if(isJson) {
+                xhr.setRequestHeader('Content-Type', 'application/json');
+            }
 
             xhr.onload = function() {
                 resolve(xhr);

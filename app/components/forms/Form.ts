@@ -8,10 +8,16 @@ export default class Form extends Block {
     render() {
         const parser = new DOMParser();
         const form = document.createElement(this.props.parent.name);
+        if (!form) {
+            return;
+        }
         const className:string = 'elementClass';
         form.classList.add(this.props.parent.class);
         if (Object.keys(this.props).includes('header')) {
             const formHeader = document.createElement('div');
+            if (!formHeader) {
+                return
+            }
             formHeader.classList.add(this.props.header.class);
             formHeader.textContent = this.props.header.text;
             form.appendChild(formHeader);
@@ -24,6 +30,9 @@ export default class Form extends Block {
         });
         if (Object.keys(this.props).includes('buttonBlock')) {
             const buttonBlock = document.createElement('div');
+            if (!buttonBlock) {
+                return;
+            }
             buttonBlock.classList.add(this.props.buttonBlock.class);
             form.appendChild(buttonBlock);
         }

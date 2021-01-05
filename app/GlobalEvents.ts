@@ -3,6 +3,7 @@ export const GLOBAL_EVENTS = {
     // FAVORITE: 'favorite_click',
     // PROFILE: 'profile_click',
     SEARCH: 'search_input',
+    ADD_USER: 'add_user',
     // CHAT_ELEMENT: 'chat_click',
     // TO_REGISTRATION: 'to_registration',
     // FORGOT_PASS: 'forgot_pass',

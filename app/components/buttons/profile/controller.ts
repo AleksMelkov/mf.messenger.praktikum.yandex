@@ -1,10 +1,11 @@
+import { ControllerType } from "../../controllerType.js";
 import Router from "../../../Router.js";
 import { ROUTE_LIST} from "../../../routes/routeList.js";
 
 const router = new Router();
 
 
-export const profileController = {
+export const profileController:ControllerType = {
     parent: {
         class: 'chats-wrapper__header-btn',
     },
@@ -12,8 +13,10 @@ export const profileController = {
         {
             type: 'click',
             callback: function () {
-                (document.querySelector('.chats-wrapper__control-panel') as HTMLElement).remove();
-                (document.querySelector('.chats-wrapper__search-panel') as HTMLElement).remove();
+                const controlPanel = document.querySelector('.chats-wrapper__control-panel');
+                if (controlPanel) controlPanel.remove();
+                const searchPanel = document.querySelector('.chats-wrapper__search-panel');
+                if (searchPanel) searchPanel.remove();
                 router.go(ROUTE_LIST.PROFILE);
             }
         }
