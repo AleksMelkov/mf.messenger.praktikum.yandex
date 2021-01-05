@@ -21,10 +21,16 @@ var Form = /** @class */ (function (_super) {
         var _this = this;
         var parser = new DOMParser();
         var form = document.createElement(this.props.parent.name);
+        if (!form) {
+            return;
+        }
         var className = 'elementClass';
         form.classList.add(this.props.parent.class);
         if (Object.keys(this.props).includes('header')) {
             var formHeader = document.createElement('div');
+            if (!formHeader) {
+                return;
+            }
             formHeader.classList.add(this.props.header.class);
             formHeader.textContent = this.props.header.text;
             form.appendChild(formHeader);
@@ -37,6 +43,9 @@ var Form = /** @class */ (function (_super) {
         });
         if (Object.keys(this.props).includes('buttonBlock')) {
             var buttonBlock = document.createElement('div');
+            if (!buttonBlock) {
+                return;
+            }
             buttonBlock.classList.add(this.props.buttonBlock.class);
             form.appendChild(buttonBlock);
         }

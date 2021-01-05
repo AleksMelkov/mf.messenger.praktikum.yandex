@@ -1,4 +1,6 @@
-export const messagesController = {
+import { ControllerType } from "../../controllerType.js";
+
+export const messagesController:ControllerType = {
     parent: {
         name: 'ul',
         class: 'chat-area',

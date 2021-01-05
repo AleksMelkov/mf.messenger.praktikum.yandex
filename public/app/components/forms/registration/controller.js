@@ -15,7 +15,7 @@ var __read = (this && this.__read) || function (o, n) {
     return ar;
 };
 import Validator from "../../../Validator.js";
-import { AuthSignup } from "../../../api/auth-api.js";
+import { AuthSignup } from "../../../api/authApi.js";
 import Router from "../../../Router.js";
 import { ROUTE_LIST } from "../../../routes/routeList.js";
 var authSignup = new AuthSignup('/auth');
@@ -92,42 +92,78 @@ export var registrationController = {
     },
     methods: {
         submitForm: function (event) {
-            var form = event.target.closest('form');
+            var target = event.target;
+            var form = target.closest('form');
             if (!form) {
                 return;
             }
             var submitError = false;
+            if (!registrationController.data) {
+                return;
+            }
             Object.entries(registrationController.data).forEach(function (_a) {
                 var _b = __read(_a, 2), key = _b[0], item = _b[1];
                 if ((item !== '' && !Validator.validate(item, key)) || item === '') {
                     submitError = true;
-                    form.querySelector("input[name=\"" + key + "\"]")
-                        .closest('.auth-window-field')
-                        .querySelector('.auth-window-field__error')
-                        .style.opacity = '1';
+                    var input = form.querySelector("input[name=\"" + key + "\"]");
+                    if (!input) {
+                        return;
+                    }
+                    var field = input.closest('.auth-window-field');
+                    if (!field) {
+                        return;
+                    }
+                    var fieldError = field.querySelector('.auth-window-field__error');
+                    if (fieldError)
+                        fieldError.style.opacity = '1';
                 }
             });
             if (registrationController.data.password !== registrationController.data.repeat_password) {
                 submitError = true;
-                form.querySelector('input[type="repeat_password"]')
-                    .closest('.auth-window-field')
-                    .querySelector('.auth-window-field__error')
-                    .style.opacity = '1';
+                var input = form.querySelector('input[type="repeat_password"]');
+                if (!input) {
+                    return;
+                }
+                var field = input.closest('.auth-window-field');
+                if (!field) {
+                    return;
+                }
+                var fieldError = field.querySelector('.auth-window-field__error');
+                if (fieldError)
+                    fieldError.style.opacity = '1';
             }
-            if (!submitError) {
+            if (!submitError && registrationController.methods) {
                 registrationController.methods.registerUser();
             }
         },
         registerUser: function () {
-            authSignup.create(registrationController.data.first_name, registrationController.data.second_name, registrationController.data.login, registrationController.data.email, registrationController.data.password, '+79009009090').then(function (res) {
+            if (!registrationController.data) {
+                return;
+            }
+            var data = {
+                first_name: registrationController.data.first_name,
+                second_name: registrationController.data.second_name,
+                login: registrationController.data.login,
+                email: registrationController.data.email,
+                password: registrationController.data.password,
+                phone: '+79009009090'
+            };
+            authSignup.create(data).then(function (res) {
                 if (res.status !== 200) {
+                    if (!registrationController.buttonBlock) {
+                        return;
+                    }
                     var buttonBlock = document.querySelector("." + registrationController.buttonBlock.class);
                     var errorBlock = document.querySelector('.auth-window-btnArea__error');
                     if (!errorBlock) {
                         errorBlock = document.createElement('div');
+                        if (!errorBlock) {
+                            return;
+                        }
                         errorBlock.classList.add('auth-window-btnArea__error');
                     }
-                    buttonBlock.prepend(errorBlock);
+                    if (buttonBlock)
+                        buttonBlock.prepend(errorBlock);
                     errorBlock.textContent = JSON.parse(res.responseText).reason;
                 }
                 else {
@@ -143,22 +179,31 @@ export var registrationController = {
             type: 'submit',
             callback: function (event) {
                 event.preventDefault();
-                registrationController.methods.submitForm(event);
+                if (registrationController.methods)
+                    registrationController.methods.submitForm(event);
             }
         },
         {
             type: 'focusout',
             callback: function (event) {
-                var input = event.target.closest('input');
+                var target = event.target;
+                var input = target.closest('input');
                 if (!input) {
                     return;
                 }
-                var header = input.closest('.auth-window-field').querySelector('.auth-window-field__title');
+                var field = input.closest('.auth-window-field');
+                if (!field) {
+                    return;
+                }
+                var header = field.querySelector('.auth-window-field__title');
                 if (!header) {
                     return;
                 }
-                var error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
+                var error = field.querySelector('.auth-window-field__error');
                 if (!error) {
+                    return;
+                }
+                if (!registrationController.data) {
                     return;
                 }
                 if (input.value === '') {
@@ -184,15 +229,20 @@ export var registrationController = {
         {
             type: 'focusin',
             callback: function (event) {
-                var input = event.target.closest('input');
+                var target = event.target;
+                var input = target.closest('input');
                 if (!input) {
                     return;
                 }
-                var header = input.closest('.auth-window-field').querySelector('.auth-window-field__title');
+                var field = input.closest('.auth-window-field');
+                if (!field) {
+                    return;
+                }
+                var header = field.querySelector('.auth-window-field__title');
                 if (!header) {
                     return;
                 }
-                var error = input.closest('.auth-window-field').querySelector('.auth-window-field__error');
+                var error = field.querySelector('.auth-window-field__error');
                 if (!error) {
                     return;
                 }

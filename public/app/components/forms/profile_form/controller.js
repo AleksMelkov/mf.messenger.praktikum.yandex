@@ -157,6 +157,8 @@ export var profileFormController = {
         {
             type: 'focusout',
             callback: function (event) {
+                var _a;
+                var store = new Store();
                 var input = event.target.closest('div[contenteditable="true"]');
                 if (!input) {
                     return;
@@ -168,13 +170,15 @@ export var profileFormController = {
                 if (input.textContent && input.textContent !== '' && Validator.validate(input, input.getAttribute('name'))) {
                     if (!input.textContent.match(/·/)) {
                         var name_1 = input.getAttribute('name');
-                        profileFormController.user[name_1] = input.textContent;
+                        store.dispatch({
+                            type: 'GET_USER_INFO',
+                            payload: (_a = {}, _a[name_1] = input.textContent, _a)
+                        });
                     }
                 }
                 else {
                     parent.style.borderColor = 'red';
                 }
-                console.log(profileFormController.user);
             }
         },
         {
@@ -190,13 +194,42 @@ export var profileFormController = {
         {
             type: 'input',
             callback: function (event) {
+                var _a, _b;
                 var element = event.target;
                 if (!element) {
                     return;
                 }
                 var input = event.target.closest('div[contenteditable="true"]');
+                var store = new Store();
+                if (input && input.getAttribute('name') === 'display_name') {
+                    var headerName = document.querySelector('.profile-wrapper__name');
+                    if (!headerName) {
+                        return;
+                    }
+                    if (element.innerText.length > 0) {
+                        headerName.textContent = element.innerText;
+                    }
+                    else {
+                        headerName.textContent = store.value.user.display_name;
+                    }
+                }
                 if (input && input.getAttribute('type') === 'password') {
-                    profileFormController.password[element.getAttribute('name')] += element.innerText.substring(0, 1);
+                    if (element.innerText.length > 0) {
+                        store.dispatch({
+                            type: 'UPDATE_PASSWORD',
+                            payload: (_a = {},
+                                _a[element.getAttribute('name')] = element.innerText.substring(0, 1),
+                                _a)
+                        });
+                    }
+                    else {
+                        store.dispatch({
+                            type: 'REMOVE_PASSWORDS',
+                            payload: (_b = {},
+                                _b[element.getAttribute('name')] = '',
+                                _b)
+                        });
+                    }
                     var dots = '';
                     for (var i = 0; i < element.innerText.length; i++) {
                         dots += '·';

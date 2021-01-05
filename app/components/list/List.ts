@@ -8,6 +8,9 @@ export default class List extends Block {
     render() {
         const parser = new DOMParser();
         const parentList = document.createElement(this.props.parent.name);
+        if (!parentList) {
+            return;
+        }
         parentList.classList.add(this.props.parent.class);
         const className:string = 'class';
         this.props.elements.forEach((chat:Record<string, any>)=>{

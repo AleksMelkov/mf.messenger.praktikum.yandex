@@ -1,18 +1,18 @@
 import HTTPTransport from "../HTTPTransport.js";
+import { baseApiUrl } from "../baseApiUrl.js";
 
 export class BaseAPI {
-    readonly http:HTTPTransport;
+    public http:HTTPTransport;
 
     constructor(url:string='') {
-        const baseUrl = 'https:/ya-praktikum.tech/api/v2';
-        this.http = new HTTPTransport(baseUrl+url);
+        this.http = new HTTPTransport(baseApiUrl+url);
     }
 
-    create() { throw new Error('Not implemented'); }
+    create<T>(args:T) { throw new Error('Not implemented '+args); }
 
     request() { throw new Error('Not implemented'); }
 
-    update() { throw new Error('Not implemented'); }
+    update<T>(args:T) { throw new Error('Not implemented'+args); }
 
-    delete() { throw new Error('Not implemented'); }
+    delete<T>(args:T) { throw new Error('Not implemented'+args); }
 }

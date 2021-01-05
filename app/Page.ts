@@ -1,5 +1,5 @@
 import Block from "./components/Block.js";
-import { AuthUserInfo } from "./api/auth-api.js";
+import { AuthUserInfo } from "./api/authApi.js";
 import Router from "./Router.js";
 import { ROUTE_LIST } from "./routes/routeList.js";
 import EventBus from "./EventBus.js";
@@ -24,21 +24,29 @@ export default class Page {
 
         this.baseStore = new Store({
             user:this.userReducer,
+            chats:this.chatsReducer,
             load:this.loadingReducer,
+            password:this.passwordReducer,
         },{
             user: {
                 id:'',
                 first_name:'',
                 second_name:'',
-                display_name:'',
+                display_name:'<пусто>',
                 login:'',
                 avatar:'',
                 email:'',
                 phone:'',
             },
+            password: {
+                old_password:'',
+                new_password:'',
+                repeat_password:''
+            },
             load: {
                 inProgress: true
-            }
+            },
+            chats:[],
         },true);
         this.isAuth();
     }
@@ -54,8 +62,47 @@ export default class Page {
         switch (action.type) {
             case 'GET_USER_INFO': {
                 Object.keys(action.payload).forEach((prop:string)=>{
-                    state[prop] = action.payload[prop];
+                    if (action.payload[prop]) {
+                        state[prop] = action.payload[prop];
+                    }
                 })
+            }
+        }
+        return state;
+    }
+
+    protected chatsReducer(state:Record<string, any>, action: { type: string, payload: any }) {
+        switch (action.type) {
+            case 'ADD_CHAT_ELEMENT': {
+                state.push(action.payload);
+                break;
+            }
+            case 'CLEAR_CHATS': {
+                state = [];
+                break;
+            }
+        }
+
+        return state;
+    }
+
+    protected passwordReducer(state:Record<string, any>, action: { type: string, payload: any }) {
+        switch (action.type) {
+            case 'UPDATE_PASSWORD': {
+                Object.keys(action.payload).forEach((prop:string)=>{
+                    if (action.payload[prop]) {
+                        state[prop] += action.payload[prop];
+                    }
+                })
+                break;
+            }
+            case 'REMOVE_PASSWORDS': {
+                Object.keys(action.payload).forEach((prop:string)=>{
+                    if (action.payload[prop]) {
+                        state[prop] = action.payload[prop];
+                    }
+                })
+                break;
             }
         }
         return state;
@@ -82,11 +129,11 @@ export default class Page {
                         type: "GET_USER_INFO",
                         payload: data
                     });
-                    console.log(this.baseStore.value)
                     this.baseStore.dispatch({type:'CHANGE_STATUS'});
-                    console.log(this.baseStore.value)
                 }
-            })
+            }).catch(()=>{
+                router.go(ROUTE_LIST.SERVER_ERROR);
+        })
     }
 
     protected installTitle() {
@@ -214,8 +261,8 @@ export default class Page {
     }
 
     public removeElements() {
-        if (Object.keys(this._elements).length===0) {
-            throw new Error('Массив элементов пуст');
+        if (!this._elements||Object.keys(this._elements).length===0) {
+            return;
         }
         Object.values(this._elements).forEach(element=>{
             const node = document.querySelector(`.${element.querySelector}`);
@@ -264,9 +311,7 @@ export default class Page {
 
     public getData() {
         return new Promise(resolve => {
-            if (this.baseStore.value.load.inProgress) {
-                resolve(this);
-            }
+            resolve(this);
         })
     }
 }

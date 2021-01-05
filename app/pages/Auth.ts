@@ -5,10 +5,10 @@ import { authTmpl} from "../components/forms/auth/template.js";
 import { authController} from "../components/forms/auth/controller.js";
 
 import Button from "../components/buttons/Button.js";
-import { authSubmitTmpl} from "../components/buttons/auth_submit/template.js";
-import { authSubmitController} from "../components/buttons/auth_submit/controller.js";
-import { notAccountTmpl} from "../components/buttons/not_account/template.js";
-import { notAccountController} from "../components/buttons/not_account/controller.js";
+import { authSubmitTmpl} from "../components/buttons/authSubmit/template.js";
+import { authSubmitController} from "../components/buttons/authSubmit/controller.js";
+import { notAccountTmpl} from "../components/buttons/notAccount/template.js";
+import { notAccountController} from "../components/buttons/notAccount/controller.js";
 
 enum CONTROLLERS {
     AUTH = 'auth-controller',

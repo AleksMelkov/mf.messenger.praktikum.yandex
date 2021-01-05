@@ -21,6 +21,9 @@ var List = /** @class */ (function (_super) {
         var _this = this;
         var parser = new DOMParser();
         var parentList = document.createElement(this.props.parent.name);
+        if (!parentList) {
+            return;
+        }
         parentList.classList.add(this.props.parent.class);
         var className = 'class';
         this.props.elements.forEach(function (chat) {

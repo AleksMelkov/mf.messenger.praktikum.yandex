@@ -7,8 +7,8 @@ import { registrationController } from "../components/forms/registration/control
 import Button from "../components/buttons/Button.js";
 import { registerSubmitTmpl } from "../components/buttons/registerSubmit/template.js";
 import { registerSubmitController } from "../components/buttons/registerSubmit/controller.js";
-import { forgotPassTmpl } from "../components/buttons/forgot_pass/template.js";
-import { forgotPassController } from "../components/buttons/forgot_pass/controller.js";
+import { forgotPassTmpl} from "../components/buttons/forgotPass/template.js";
+import { forgotPassController} from "../components/buttons/forgotPass/controller.js";
 
 enum CONTROLLERS {
     REGISTER = 'register-controller',

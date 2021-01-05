@@ -1,28 +1,31 @@
 import Page from "../Page.js";
+import { AuthUserInfo } from "../api/authApi.js";
+import Router from "../Router.js";
+import { ROUTE_LIST } from "../routes/routeList.js";
 
 import Button from "../components/buttons/Button.js";
-import { profileReturnTmpl} from "../components/buttons/profile_return/template.js";
-import { profileReturnController} from "../components/buttons/profile_return/controller.js";
-import { changeAvatarTmpl} from "../components/buttons/change_avatar/template.js";
-import { changeAvatarComponent} from "../components/buttons/change_avatar/component.js";
-import { changeProfileTmpl} from "../components/buttons/change_profile/template.js";
-import { changeProfileController} from "../components/buttons/change_profile/controller.js";
-import { changePassTmpl} from "../components/buttons/change_pass/template.js";
-import { changePassController} from "../components/buttons/change_pass/controller.js";
-import { exitProfileTmpl} from "../components/buttons/exit_profile/template.js";
-import { exitProfileController} from "../components/buttons/exit_profile/controller.js";
-import { saveProfileTmpl} from "../components/buttons/save_profile/template.js";
-import { saveProfileController} from "../components/buttons/save_profile/controller.js";
-import { savePassTmpl} from "../components/buttons/save_pass/template.js";
-import { savePassController} from "../components/buttons/save_pass/controller.js";
+import { profileReturnTmpl} from "../components/buttons/profileReturn/template.js";
+import { profileReturnController} from "../components/buttons/profileReturn/controller.js";
+import { changeAvatarTmpl} from "../components/buttons/changeAvatar/template.js";
+import { changeAvatarComponent} from "../components/buttons/changeAvatar/component.js";
+import { changeProfileTmpl} from "../components/buttons/changeProfile/template.js";
+import { changeProfileController} from "../components/buttons/changeProfile/controller.js";
+import { changePassTmpl} from "../components/buttons/changePass/template.js";
+import { changePassController} from "../components/buttons/changePass/controller.js";
+import { exitProfileTmpl} from "../components/buttons/exitProfile/template.js";
+import { exitProfileController} from "../components/buttons/exitProfile/controller.js";
+import { saveProfileTmpl} from "../components/buttons/saveProfile/template.js";
+import { saveProfileController} from "../components/buttons/saveProfile/controller.js";
+import { savePassTmpl} from "../components/buttons/savePass/template.js";
+import { savePassController} from "../components/buttons/savePass/controller.js";
 
 import Content from "../components/content/Content.js";
-import { profileHeaderTmpl} from "../components/content/profile_header/template.js";
-import { profileHeaderController} from "../components/content/profile_header/controller.js";
+import { profileHeaderTmpl} from "../components/content/profileHeader/template.js";
+import { profileHeaderController} from "../components/content/profileHeader/controller.js";
 
 import Form from "../components/forms/Form.js";
-import { profileFormTemplate} from "../components/forms/profile_form/template.js";
-import { profileFormController} from "../components/forms/profile_form/controller.js";
+import { profileFormTemplate} from "../components/forms/profileForm/template.js";
+import { profileFormController} from "../components/forms/profileForm/controller.js";
 
 enum CONTROLLERS {
     PROFILE_RETURN = 'profile-return-controller',
@@ -48,6 +51,9 @@ enum ELEMENTS {
     SAVE_PASS = 'save-pass',
 }
 
+const userInfo = new AuthUserInfo('/auth');
+const router = new Router();
+
 export default class Profile extends Page{
     protected profileWrapper:HTMLElement|null;
     protected profileBlock:HTMLElement|null;
@@ -60,10 +66,24 @@ export default class Profile extends Page{
     }
 
     getData(): Promise<unknown> {
+        const user = this.baseStore.value.user;
+        if (!user.email) {
+            return userInfo.request()
+                .then(res=>JSON.parse(res.responseText))
+                .then(data=>{
+                    this.baseStore.dispatch({
+                        type: "GET_USER_INFO",
+                        payload: data
+                    });
+                    return new Promise(resolve => {
+                        resolve(this);
+                    })
+                }).catch(()=>{
+                    router.go(ROUTE_LIST.SERVER_ERROR)
+                })
+        }
         return new Promise(resolve => {
-            if (this.baseStore.value.load.inProgress) {
-                resolve(this);
-            }
+            resolve(this);
         })
     }
 
@@ -88,13 +108,13 @@ export default class Profile extends Page{
             this.profileWrapper = document.createElement('div');
             this.profileWrapper.classList.add('profile-wrapper');
         }
-        (document.body as HTMLElement).appendChild(this.profileWrapper);
+        document.body.appendChild(this.profileWrapper);
         const mainFormBlock = document.createElement('main')
         mainFormBlock.classList.add('profile-wrapper__form-block');
-        (this.profileWrapper as HTMLElement).appendChild(mainFormBlock);
+        this.profileWrapper.appendChild(mainFormBlock);
         this.profileBlock = document.createElement('div');
-        (this.profileBlock as HTMLElement).classList.add('profile-wrapper__form-block-middle');
-        (mainFormBlock as HTMLElement).appendChild(this.profileBlock);
+        this.profileBlock.classList.add('profile-wrapper__form-block-middle');
+        mainFormBlock.appendChild(this.profileBlock);
     }
 
     protected profileReturnInit() {
@@ -107,6 +127,18 @@ export default class Profile extends Page{
         this.mountComponent(CONTROLLERS.AVATAR,changeAvatarComponent);
         this.addingElement(ELEMENTS.AVATAR,Button,CONTROLLERS.AVATAR,changeAvatarTmpl);
         this.renderAppend((this.profileBlock as HTMLElement),ELEMENTS.AVATAR);
+        const avatarBlock = document.querySelector(`.${changeAvatarComponent.parent.class}`);
+        if (this.baseStore.value.user.avatar&&avatarBlock instanceof HTMLDivElement) {
+            avatarBlock.querySelector('i')?.remove();
+        }
+        const input = document.querySelector(`.${changeAvatarComponent.parent.class} input`);
+        if (input instanceof HTMLInputElement) {
+
+            input.addEventListener('change',(event)=>{
+                if (changeAvatarComponent.methods)
+                    changeAvatarComponent.methods.changeAvatar(event)
+            })
+        }
     }
 
     protected profileHeaderInit() {

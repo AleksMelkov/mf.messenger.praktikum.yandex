@@ -1,4 +1,6 @@
-export const favoriteController = {
+import { ControllerType } from "../../controllerType.js";
+
+export const favoriteController:ControllerType = {
     parent: {
         class: 'chats-wrapper__header-btn',
     },

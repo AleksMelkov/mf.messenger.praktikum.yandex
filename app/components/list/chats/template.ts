@@ -1,5 +1,5 @@
 export const chatsListTmpl = `
-    <li class="{{ class }}" data-id="{{ id }}">
+    <li class="{{ class }}" data-id="{{ id }}" addingList="{{ isAdd }}">
         <div class="chat-list__element-logo">
             <img src="{{ logo }}">
         </div>
@@ -11,6 +11,9 @@ export const chatsListTmpl = `
             <span class="info-area__time">{{ time }}</span>
             <div class="info-area__counter" show="{{ show }}">
                 <span>{{ count }}</span>
+            </div>
+            <div class="info-area__add" isAdd="{{ isAdd }}">
+                <i class="fas fa-plus"></i>
             </div>
         </div>
     </li>
