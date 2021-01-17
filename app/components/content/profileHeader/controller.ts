@@ -1,5 +1,5 @@
-import { ControllerType } from "../../controllerType.js";
-import Store from "../../../Store.js";
+import { ControllerType } from "../../controllerType";
+import Store from "../../../Store";
 
 export const profileHeaderController:ControllerType = {
     parent: {

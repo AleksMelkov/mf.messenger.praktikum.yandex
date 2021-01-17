@@ -1,5 +1,5 @@
-import Route from "./Route.js";
-import Page from "./Page.js";
+import Route from "./Route";
+import Page from "./Page";
 
 type asPage<T> = new () => T;
 

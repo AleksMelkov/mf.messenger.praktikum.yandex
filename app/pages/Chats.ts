@@ -1,34 +1,42 @@
-import Page from "../Page.js";
-import { ChatsApi } from "../api/chatsApi.js";
-import { ChatNewMsgApi } from "../api/chatsApi.js";
-import Router from "../Router.js";
-import { ROUTE_LIST } from "../routes/routeList.js";
+import Page from "../Page";
+import { ChatsApi } from "../api/chatsApi";
+import { ChatNewMsgApi } from "../api/chatsApi";
+import Router from "../Router";
+import { ROUTE_LIST } from "../routes/routeList";
 
-import Button from "../components/buttons/Button.js";
-import { favoriteTmpl} from "../components/buttons/favorite/template.js";
-import { favoriteController} from "../components/buttons/favorite/controller.js";
-import { profileTmpl} from "../components/buttons/profile/template.js";
-import { profileController} from "../components/buttons/profile/controller.js";
-import { newChatTmpl } from "../components/buttons/newChat/template.js";
-import { newChatController } from "../components/buttons/newChat/controller.js";
-import { chatSettingsButtonTmpl} from "../components/buttons/chatSettings/template.js";
-import { chatSettingsComponentButton} from "../components/buttons/chatSettings/component.js";
+import Button from "../components/buttons/Button";
+import { favoriteTmpl} from "../components/buttons/favorite/template";
+import { favoriteController} from "../components/buttons/favorite/controller";
+import { profileTmpl} from "../components/buttons/profile/template";
+import { profileController} from "../components/buttons/profile/controller";
+import { newChatTmpl } from "../components/buttons/newChat/template";
+import { newChatController } from "../components/buttons/newChat/controller";
+import { chatSettingsButtonTmpl} from "../components/buttons/chatSettings/template";
+import { chatSettingsComponentButton} from "../components/buttons/chatSettings/component";
+import { sendMessageTmpl } from "../components/buttons/sendMessage/template";
+import { sendMessageController } from "../components/buttons/sendMessage/component";
+import { uploadAttachTmpl } from "../components/buttons/uploadAttach/template";
+import { uploadAttachController } from "../components/buttons/uploadAttach/component";
 
-import Input from "../components/inputs/Input.js";
-import { searchTmpl} from "../components/inputs/search/template.js";
-import { searchController} from "../components/inputs/search/controller.js";
+import Input from "../components/inputs/Input";
+import { searchTmpl} from "../components/inputs/search/template";
+import { searchController} from "../components/inputs/search/controller";
 
-import List from "../components/list/List.js";
-import { chatsListTmpl } from "../components/list/chats/template.js";
-import { chatsController } from "../components/list/chats/controller.js";
-import { chatAddingTmpl } from "../components/list/chatAdding/template.js";
-import { chatAddingController } from "../components/list/chatAdding/controller.js";
-import { chatSettingsTmpl } from "../components/list/chatSettings/template.js";
-import { chatSettingsController } from "../components/list/chatSettings/controller.js";
+import List from "../components/list/List";
+import { chatsListTmpl } from "../components/list/chats/template";
+import { chatsController } from "../components/list/chats/controller";
+import { chatAddingTmpl } from "../components/list/chatAdding/template";
+import { chatAddingController } from "../components/list/chatAdding/controller";
+import { chatSettingsTmpl } from "../components/list/chatSettings/template";
+import { chatSettingsController } from "../components/list/chatSettings/controller";
+import { messagesTmpl } from "../components/list/messages/template";
+import { messagesController } from "../components/list/messages/controller";
+import { messageInputTmpl } from "../components/inputs/messageInput/template";
+import { messageInputController } from "../components/inputs/messageInput/controller";
 
-import Content from "../components/content/Content.js";
-import { headerContentTmpl} from "../components/content/headerContent/template.js";
-import { headerContentComponent} from "../components/content/headerContent/controller.js";
+import Content from "../components/content/Content";
+import { headerContentTmpl} from "../components/content/headerContent/template";
+import { headerContentComponent} from "../components/content/headerContent/controller";
 
 enum CONTROLLERS {
     FAVORITE = 'favorite-controller',
@@ -40,6 +48,10 @@ enum CONTROLLERS {
     HEADER_NAME = 'header-name-controller',
     CHAT_SETTING_BTN = 'chat-setting-btn-controller',
     CHAT_SETTINGS = 'chat-settings-controller',
+    CHAT_LIST = 'chat-list-controller',
+    CHAT_INPUT = 'chat-input-controller',
+    SEND_MESSAGE = 'send-message-controller',
+    UPLOAD_ATTACH = 'upload-attach-controller',
 }
 
 enum ELEMENTS {
@@ -52,6 +64,10 @@ enum ELEMENTS {
     HEADER_NAME = 'header-name',
     CHAT_SETTING_BTN = 'chat-setting-btn',
     CHAT_SETTINGS = 'chat-settings',
+    CHAT_LIST = 'chat-list',
+    CHAT_INPUT = 'chat-input',
+    SEND_MESSAGE = 'send-message',
+    UPLOAD_ATTACH = 'upload-attach',
 }
 
 const chatsApi = new ChatsApi();
@@ -66,6 +82,9 @@ export default class Chats extends Page {
     protected headerInfo:HTMLElement|null;
     protected settingBtn:HTMLElement|null;
     protected settingBlock:HTMLElement|null;
+    protected mainWrapper:HTMLElement|null;
+    // protected chatsArea:HTMLElement|null;
+    protected bottomPanel:HTMLElement|null;
 
     constructor() {
         super();
@@ -112,6 +131,10 @@ export default class Chats extends Page {
         this.headerNameInit();
         this.chatSettingBtnInit();
         this.chatSettingListInit();
+        this.chatListInit();
+        this.uploadAttachInit();
+        this.messageInputInit();
+        this.messageSendInit();
     }
 
     protected baseRender() {
@@ -136,6 +159,22 @@ export default class Chats extends Page {
         this.headerInfo = document.querySelector('.main-content__header-info');
         this.settingBtn = document.querySelector('.main-content__header-dropdown');
         this.settingBlock = document.querySelector('.header-dropdown__block');
+        this.mainWrapper = document.querySelector('.chats-wrapper__main-content');
+        if (!this.mainWrapper) {
+            return;
+        }
+        // this.chatsArea = document.querySelector('.chat-area');
+        // if (!this.chatsArea) {
+        //     this.chatsArea = document.createElement('ul');
+        //     this.chatsArea.classList.add('chat-area');
+        //     main.appendChild(this.chatsArea);
+        // }
+        this.bottomPanel = document.querySelector('.main-content__bottom-panel');
+        if (!this.bottomPanel) {
+            this.bottomPanel = document.createElement('div')
+            this.bottomPanel.classList.add('main-content__bottom-panel');
+            this.mainWrapper.appendChild(this.bottomPanel);
+        }
     }
 
     protected favoriteInit() {
@@ -202,5 +241,37 @@ export default class Chats extends Page {
         this.addingElement(ELEMENTS.ADD_TO_CHAT,List,CONTROLLERS.ADD_TO_CHAT,chatAddingTmpl);
         if (this.addingPopup instanceof HTMLDivElement)
             this.renderAppend(this.addingPopup,ELEMENTS.ADD_TO_CHAT);
+    }
+
+    protected chatListInit() {
+        this.mountComponent(CONTROLLERS.CHAT_LIST,messagesController);
+        this.addingElement(ELEMENTS.CHAT_LIST,List,CONTROLLERS.CHAT_LIST,messagesTmpl);
+        if (this.mainWrapper instanceof HTMLElement) {
+            this.renderAppend(this.mainWrapper,ELEMENTS.CHAT_LIST);
+        }
+    }
+
+    protected uploadAttachInit() {
+        this.mountComponent(CONTROLLERS.UPLOAD_ATTACH,uploadAttachController);
+        this.addingElement(ELEMENTS.UPLOAD_ATTACH,Button,CONTROLLERS.UPLOAD_ATTACH,uploadAttachTmpl);
+        if (this.bottomPanel instanceof HTMLElement) {
+            this.renderAppend(this.bottomPanel,ELEMENTS.UPLOAD_ATTACH);
+        }
+    }
+
+    protected messageInputInit() {
+        this.mountComponent(CONTROLLERS.CHAT_INPUT,messageInputController);
+        this.addingElement(ELEMENTS.CHAT_INPUT,Input,CONTROLLERS.CHAT_INPUT,messageInputTmpl);
+        if (this.bottomPanel instanceof HTMLElement) {
+            this.renderAppend(this.bottomPanel,ELEMENTS.CHAT_INPUT);
+        }
+    }
+
+    protected messageSendInit() {
+        this.mountComponent(CONTROLLERS.SEND_MESSAGE,sendMessageController);
+        this.addingElement(ELEMENTS.SEND_MESSAGE,Button,CONTROLLERS.SEND_MESSAGE,sendMessageTmpl);
+        if (this.bottomPanel instanceof HTMLElement) {
+            this.renderAppend(this.bottomPanel,ELEMENTS.SEND_MESSAGE);
+        }
     }
 }

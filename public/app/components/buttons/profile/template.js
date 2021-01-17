@@ -1,2 +1,0 @@
-export var profileTmpl = "\n    <div class=\"{{ parent.class }} chats-wrapper__header-btn_ml_auto\">\n        <span>\u041F\u0440\u043E\u0444\u0438\u043B\u044C</span> <i class=\"fas fa-chevron-right\"></i>\n    </div>\n";
-//# sourceMappingURL=template.js.map

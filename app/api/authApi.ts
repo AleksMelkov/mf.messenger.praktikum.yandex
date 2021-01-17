@@ -1,4 +1,4 @@
-import { BaseAPI } from "./BaseAPI.js";
+import { BaseAPI } from "./BaseAPI";
 
 export class AuthSignup extends BaseAPI {
     create<T>(args:T) {

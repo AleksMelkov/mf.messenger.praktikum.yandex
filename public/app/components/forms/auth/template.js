@@ -1,2 +1,0 @@
-export var authTmpl = "\n    <div class=\"{{ elementClass }}\">\n        <small class=\"auth-window-field__title\">{{ header }}</small>\n        <input type=\"{{ type }}\" name=\"{{ name }}\" class=\"auth-window-field__input\" placeholder=\"{{ placeholder }}\">\n        <small class=\"auth-window-field__error\">{{ errorText }}</small>\n    </div>\n";
-//# sourceMappingURL=template.js.map

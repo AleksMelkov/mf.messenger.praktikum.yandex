@@ -1,2 +1,0 @@
-export var savePassTmpl = "\n    <div class=\"{{ parent.class }}\" type=\"password\">\n        <div class=\"profile-wrapper-form__element-name profile-wrapper-form__element-name_change\"\">\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C</div>\n    </div>\n";
-//# sourceMappingURL=template.js.map

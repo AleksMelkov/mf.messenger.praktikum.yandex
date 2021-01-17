@@ -1,14 +1,14 @@
-import Page from "../Page.js";
+import Page from "../Page";
 
-import Form from "../components/forms/Form.js";
-import { registrationTmpl } from "../components/forms/registration/template.js";
-import { registrationController } from "../components/forms/registration/controller.js";
+import Form from "../components/forms/Form";
+import { registrationTmpl } from "../components/forms/registration/template";
+import { registrationController } from "../components/forms/registration/controller";
 
-import Button from "../components/buttons/Button.js";
-import { registerSubmitTmpl } from "../components/buttons/registerSubmit/template.js";
-import { registerSubmitController } from "../components/buttons/registerSubmit/controller.js";
-import { forgotPassTmpl} from "../components/buttons/forgotPass/template.js";
-import { forgotPassController} from "../components/buttons/forgotPass/controller.js";
+import Button from "../components/buttons/Button";
+import { registerSubmitTmpl } from "../components/buttons/registerSubmit/template";
+import { registerSubmitController } from "../components/buttons/registerSubmit/controller";
+import { forgotPassTmpl} from "../components/buttons/forgotPass/template";
+import { forgotPassController} from "../components/buttons/forgotPass/controller";
 
 enum CONTROLLERS {
     REGISTER = 'register-controller',

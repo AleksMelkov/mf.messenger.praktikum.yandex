@@ -1,4 +1,4 @@
-import { BaseAPI } from "./BaseAPI.js";
+import { BaseAPI } from "./BaseAPI";
 
 export class ChatsApi extends BaseAPI {
     request() {

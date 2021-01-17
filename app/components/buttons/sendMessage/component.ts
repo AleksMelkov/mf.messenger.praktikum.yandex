@@ -1,4 +1,8 @@
-import { ControllerType } from "../../controllerType.js";
+import { ControllerType } from "../../controllerType";
+import EventBus from "../../../EventBus";
+import { GLOBAL_EVENTS } from "../../../GlobalEvents";
+
+const eventBus = new EventBus();
 
 export const sendMessageController:ControllerType = {
     parent: {
@@ -8,7 +12,7 @@ export const sendMessageController:ControllerType = {
         {
             type: 'click',
             callback: function () {
-                console.log('Отправить сообщение')
+                eventBus.emit(GLOBAL_EVENTS.SEND_MESSAGE_CLICK);
             }
         }
     ]

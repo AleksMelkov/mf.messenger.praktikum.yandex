@@ -1,3 +1,5 @@
+import ChatWebSocket from "../ChatWebSocket";
+
 export type ControllerType = {
     component_name?:string
     parent:Record<string, string>,
@@ -7,8 +9,9 @@ export type ControllerType = {
     header?:Record<string, string>,
     elements?:Record<string, any>[],
     buttonBlock?:Record<string, string>,
-    data?:Record<string, string>,
+    data?:Record<string, any>,
     password?:Record<string, string>,
     methods?:Record<string, Function>,
-    events?:Record<string, any>
+    events?:Record<string, any>,
+    socket?:ChatWebSocket|null,
 };

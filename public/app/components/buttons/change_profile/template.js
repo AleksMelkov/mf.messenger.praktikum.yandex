@@ -1,2 +1,0 @@
-export var changeProfileTmpl = "\n    <div class=\"{{ parent.class }} profile-wrapper-form__element_hide\" type=\"common\">\n        <div class=\"profile-wrapper-form__element-name profile-wrapper-form__element-btn profile-wrapper-form__element-name_change\">\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C \u0434\u0430\u043D\u043D\u044B\u0435</div>\n    </div>\n";
-//# sourceMappingURL=template.js.map

@@ -1,9 +1,9 @@
-import { ControllerType } from "../../controllerType.js";
-import Validator from "../../../Validator.js";
-import Router from "../../../Router.js";
-import { AuthSignin } from "../../../api/authApi.js";
+import { ControllerType } from "../../controllerType";
+import Validator from "../../../Validator";
+import Router from "../../../Router";
+import { AuthSignin } from "../../../api/authApi";
 
-import { ROUTE_LIST } from "../../../routes/routeList.js";
+import { ROUTE_LIST } from "../../../routes/routeList";
 
 const router = new Router();
 const authSignin = new AuthSignin('/auth');

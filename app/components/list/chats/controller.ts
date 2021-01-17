@@ -1,11 +1,11 @@
-import { ControllerType } from "../../controllerType.js";
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS} from "../../../GlobalEvents.js";
-import Store from "../../../Store.js";
-import { GetUserApi } from "../../../api/getUserApi.js";
-import { headerContentComponent} from "../../content/headerContent/controller.js";
-import Router from "../../../Router.js";
-import { ROUTE_LIST } from "../../../routes/routeList.js";
+import { ControllerType } from "../../controllerType";
+import EventBus from "../../../EventBus";
+import { GLOBAL_EVENTS} from "../../../GlobalEvents";
+import Store from "../../../Store";
+import { GetUserApi } from "../../../api/getUserApi";
+import { headerContentComponent} from "../../content/headerContent/controller";
+import Router from "../../../Router";
+import { ROUTE_LIST } from "../../../routes/routeList";
 
 const eventBus = new EventBus();
 const userApi = new GetUserApi('/user');
@@ -134,9 +134,11 @@ export const chatsController:ControllerType = {
                                     text:headerElement.innerText
                                 }
                         })
-                        const mainWrapper = <HTMLDivElement>document.querySelector('.main-content__header-info');
+                        const mainWrapper = <HTMLDivElement>document.querySelector('.chats-wrapper__main-content');
                         mainWrapper.setAttribute('chat-id',<string>chatElement.dataset.id);
-                        mainWrapper.classList.remove('main-content__header-info__hide');
+                        mainWrapper.classList.remove('chats-wrapper__main-content-hide');
+                        const chatId = chatElement.dataset.id;
+                        eventBus.emit(GLOBAL_EVENTS.GET_CHAT_MESSAGES,chatId);
                     }
                 }
             }

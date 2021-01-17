@@ -1,5 +1,5 @@
-import EventBus from "../EventBus.js";
-import Templator from "../Templator.js";
+import EventBus from "../EventBus";
+import Templator from "../Templator";
 
 export default  class Block{
     static EVENTS = {

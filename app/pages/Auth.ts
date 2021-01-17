@@ -1,14 +1,14 @@
-import Page from "../Page.js";
+import Page from "../Page";
 
-import Form from "../components/forms/Form.js";
-import { authTmpl} from "../components/forms/auth/template.js";
-import { authController} from "../components/forms/auth/controller.js";
+import Form from "../components/forms/Form";
+import { authTmpl} from "../components/forms/auth/template";
+import { authController} from "../components/forms/auth/controller";
 
-import Button from "../components/buttons/Button.js";
-import { authSubmitTmpl} from "../components/buttons/authSubmit/template.js";
-import { authSubmitController} from "../components/buttons/authSubmit/controller.js";
-import { notAccountTmpl} from "../components/buttons/notAccount/template.js";
-import { notAccountController} from "../components/buttons/notAccount/controller.js";
+import Button from "../components/buttons/Button";
+import { authSubmitTmpl} from "../components/buttons/authSubmit/template";
+import { authSubmitController} from "../components/buttons/authSubmit/controller";
+import { notAccountTmpl} from "../components/buttons/notAccount/template";
+import { notAccountController} from "../components/buttons/notAccount/controller";
 
 enum CONTROLLERS {
     AUTH = 'auth-controller',

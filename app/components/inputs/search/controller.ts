@@ -1,6 +1,6 @@
-import { ControllerType } from "../../controllerType.js";
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS} from "../../../GlobalEvents.js";
+import { ControllerType } from "../../controllerType";
+import EventBus from "../../../EventBus";
+import { GLOBAL_EVENTS} from "../../../GlobalEvents";
 
 const eventBus = new EventBus();
 export const searchController:ControllerType= {

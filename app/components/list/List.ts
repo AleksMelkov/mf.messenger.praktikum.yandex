@@ -1,4 +1,4 @@
-import Block from "../Block.js";
+import Block from "../Block";
 
 export default class List extends Block {
     constructor(props:Record<string, any>,template:string) {

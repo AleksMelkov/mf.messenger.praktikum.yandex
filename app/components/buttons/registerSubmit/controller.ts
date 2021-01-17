@@ -1,4 +1,4 @@
-import { ControllerType } from "../../controllerType.js";
+import { ControllerType } from "../../controllerType";
 
 export const registerSubmitController:ControllerType = {
     parent: {

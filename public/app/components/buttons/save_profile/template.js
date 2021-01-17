@@ -1,2 +1,0 @@
-export var saveProfileTmpl = "\n    <div class=\"{{ parent.class }} profile-wrapper-form__element_save\" type=\"common\">\n        <div class=\"profile-wrapper-form__element-name profile-wrapper-form__element-btn profile-wrapper-form__element-name_save\">\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u0442\u044C</div>\n    </div>\n";
-//# sourceMappingURL=template.js.map
