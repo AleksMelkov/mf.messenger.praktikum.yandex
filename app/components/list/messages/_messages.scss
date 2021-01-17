@@ -1,0 +1,107 @@
+.chat-area {
+  list-style-type: none;
+  padding-left: 0;
+  overflow: auto;
+  height: calc(100% - 170px);
+  margin-right: -10px;
+}
+.chat-area:hover {
+  padding-right: 11px;
+}
+.chat-area::-webkit-scrollbar-track {
+  border-radius: 4px;
+}
+.chat-area::-webkit-scrollbar{
+  background: #ffffff;
+}
+.chat-area:hover::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 4px;
+  background: #ffffff;
+}
+.chat-area::-webkit-scrollbar-thumb {
+  background: #ffffff;
+}
+.chat-area:hover::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #85BA6A;
+}
+.chat-area__date {
+  padding: 20px 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  color: #787878;
+}
+.chat-area__row_in {
+  text-align: left;
+}
+.chat-area__row_out {
+  text-align: right;
+}
+.chat-area__message {
+  display: inline-block;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 20px;
+  max-width: 600px;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  position: relative;
+}
+.chat-area__message h5 {
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: .9rem;
+}
+.chat-area__message p {
+  margin: 0;
+}
+.chat-area__message_in {
+  background: #F4F4F6;
+}
+.chat-area__message_in:before, .chat-area__message_out:before {
+  content: '';
+  border: 10px solid transparent;
+  position: absolute;
+  bottom: -20px;
+}
+.chat-area__message_in:before {
+  right: 20px;
+  border-top: 10px solid #F4F4F6;
+}
+.chat-area__message_in:after, .chat-area__message_out:after {
+  content: attr(data-time);
+  position: absolute;
+  bottom: 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 13px;
+  color: #787878;
+}
+.chat-area__message_in:after {
+  right: -45px;
+}
+.chat-area__message_out {
+  margin-left: auto;
+  background: rgba(175, 245, 139, 0.3);
+}
+.chat-area__message_out:before {
+  left: 20px;
+  border-top: 10px solid rgba(175, 245, 139, 0.3);
+}
+.chat-area__message_out:after {
+  left: -45px;
+}
+.chat-area__message_image {
+  border: 1px solid #CECECE;
+  background: #ffffff;
+}
+.chat-area__message_image img {
+  max-width: 400px;
+}
+.chat-area__message_image:before {
+  border-top-color: transparent;
+}

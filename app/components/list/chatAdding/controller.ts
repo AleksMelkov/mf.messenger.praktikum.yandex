@@ -1,8 +1,8 @@
-import { ControllerType } from "../../controllerType.js";
-import Store from "../../../Store.js";
-import Router from "../../../Router.js";
-import { ChatsApi} from "../../../api/chatsApi.js";
-import { ROUTE_LIST } from "../../../routes/routeList.js";
+import { ControllerType } from "../../controllerType";
+import Store from "../../../Store";
+import Router from "../../../Router";
+import { ChatsApi} from "../../../api/chatsApi";
+import { ROUTE_LIST } from "../../../routes/routeList";
 
 const chats = new ChatsApi();
 const router = new Router();

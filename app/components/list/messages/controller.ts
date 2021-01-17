@@ -1,4 +1,14 @@
-import { ControllerType } from "../../controllerType.js";
+import { ControllerType } from "../../controllerType";
+import EventBus from "../../../EventBus";
+import { GLOBAL_EVENTS } from "../../../GlobalEvents";
+import { GetToken } from "../../../api/sendMsgApi";
+import { ChatUsersApi } from "../../../api/chatsApi";
+import Store from "../../../Store";
+import ChatWebSocket from "../../../ChatWebSocket";
+
+const eventBus = new EventBus();
+const getToken = new GetToken();
+const chatUsers = new ChatUsersApi('/chats');
 
 export const messagesController:ControllerType = {
     parent: {
@@ -6,38 +16,120 @@ export const messagesController:ControllerType = {
         class: 'chat-area',
     },
     elements:[
-        {
-            class: 'chat-area__date',
-            text: '11 ноября',
+        // {
+        //     class: 'chat-area__date',
+        //     text: '11 ноября',
+        // },
+        // {
+        //     class: 'chat-area__row_in',
+        //     text: '                <div class="chat-area__message chat-area__message_in chat-area__message_image" data-time="15:30">\n' +
+        //         '                    <img src="images/image-test.jpg" alt="test">\n' +
+        //         '                </div>'
+        // },
+        // {
+        //     class: 'chat-area__row_out',
+        //     text: '                <div class="chat-area__message chat-area__message_out" data-time="16:20">\n' +
+        //         '                    Че-как?\n' +
+        //         '                </div>'
+        // },
+    ],
+    socket:null,
+    mount() {
+        if (!messagesController.methods) {
+            return;
+        }
+        eventBus.on(GLOBAL_EVENTS.GET_CHAT_MESSAGES,messagesController.methods.getMessages.bind(messagesController));
+        eventBus.on(GLOBAL_EVENTS.NEW_MESSAGE,messagesController.methods.newMessages.bind(messagesController));
+        eventBus.on(GLOBAL_EVENTS.SEND_MESSAGE,messagesController.methods.sendMessage.bind(messagesController))
+    },
+    methods: {
+        getChatToken(id:number) {
+            return getToken.create<number>(id)
+                .then(res=>JSON.parse(res.responseText))
+                .then((data)=>{
+                    return Promise.resolve(data.token);
+                });
         },
-        {
-            class: 'chat-area__row_in',
-            text: '                <div class="chat-area__message chat-area__message_in" data-time="15:20">\n' +
-                '                    Утихли истерические женские крики, отсверлили свистки милиции, две санитарные\n' +
-                '                    машины увезли: одна – обезглавленное тело и отрезанную голову в морг, другая –\n' +
-                '                    раненную осколками стекла красавицу вожатую, дворники в белых фартуках убрали\n' +
-                '                    осколки стекол и засыпали песком кровавые лужи, а Иван Николаевич как упал на\n' +
-                '                    скамейку, не добежав до турникета, так и остался на ней.\n' +
-                '\n' +
-                '                    Несколько раз он пытался подняться, но ноги его не слушались – с Бездомным\n' +
-                '                    приключилось что-то вроде паралича.\n' +
-                '\n' +
-                '                    Поэт бросился бежать к турникету, как только услыхал первый вопль, и видел, как голова\n' +
-                '                    подскакивала на мостовой. От этого он до того обезумел, что, упавши на скамью, укусил\n' +
-                '                    себя за руку до крови.\n' +
-                '                </div>',
+        getMessages(chatId:number) {
+            if (!messagesController.methods) {
+                return;
+            }
+            messagesController.methods.getChatToken(chatId).then((token:string)=>{
+                const store = new Store();
+                store.dispatch({
+                    type:'CLEAR_LIST'
+                });
+                if (!messagesController.methods) {
+                    return;
+                }
+                messagesController.methods.getChatUsers(chatId,store).then(()=>{
+                    eventBus.emit(GLOBAL_EVENTS.CHANGE_ELEMENT_PROPS,messagesController.component_name,{elements:[]});
+                    messagesController.socket = new ChatWebSocket(store.value.user.id,chatId,token);
+                });
+            });
         },
-        {
-            class: 'chat-area__row_in',
-            text: '                <div class="chat-area__message chat-area__message_in chat-area__message_image" data-time="15:30">\n' +
-                '                    <img src="images/image-test.jpg" alt="test">\n' +
-                '                </div>'
+        newMessages(data:Record<string, string>[]) {
+            const store = new Store();
+            const newData:Record<string, string>[] = [];
+            if (!messagesController.methods) {
+                return;
+            }
+            if (!Array.isArray(data)&&messagesController.elements) {
+                const newElement:Record<string, string> = data;
+                const date = new Date(newElement.time);
+                let messageType = 'out';
+                if (newElement.userId!==store.value.user.id) {
+                    messageType = 'in';
+                }
+                messagesController.elements.push({
+                    class: `chat-area__row_${messageType}`,
+                    text: `<div class="chat-area__message chat-area__message_${messageType}" data-time="${date.getHours()}:${String(date.getMinutes()).length===2?date.getMinutes():date.getMinutes()+'0'}"><h5>${store.value.user_list[newElement.userId]}</h5><p>${newElement.content}</p></div>`,
+                });
+                eventBus.emit(GLOBAL_EVENTS.CHANGE_ELEMENT_PROPS,messagesController.component_name,{elements:messagesController.elements});
+                messagesController.methods.scrollBottom();
+                return;
+            }
+            data.forEach(element=>{
+                const date = new Date(element.time);
+                let messageType = 'out';
+                if (element.user_id!==store.value.user.id) {
+                    messageType = 'in';
+                }
+                newData.unshift({
+                    class: `chat-area__row_${messageType}`,
+                    text: `<div class="chat-area__message chat-area__message_${messageType}" data-time="${date.getHours()}:${String(date.getMinutes()).length===2?date.getMinutes():date.getMinutes()+'0'}"><h5>${store.value.user_list[element.user_id]}</h5><p>${element.content}</p></div>`,
+                });
+                eventBus.emit(GLOBAL_EVENTS.CHANGE_ELEMENT_PROPS,messagesController.component_name,{elements:newData});
+            });
+            messagesController.methods.scrollBottom();
         },
-        {
-            class: 'chat-area__row_out',
-            text: '                <div class="chat-area__message chat-area__message_out" data-time="16:20">\n' +
-                '                    Че-как?\n' +
-                '                </div>'
+        sendMessage(content:string) {
+            if (messagesController.socket) {
+                messagesController.socket.sendMessage({
+                    content:content,
+                    type:'message',
+                });
+            }
         },
-    ]
+        getChatUsers(chatId:number,store:Store) {
+            return chatUsers.request(String(chatId))
+                .then(res=>JSON.parse(res.responseText))
+                .then(data=>{
+                    data.forEach((user:Record<string, any>)=>{
+                        store.dispatch({
+                            type:'ADD_TO_LIST',
+                            payload:user
+                        })
+                    });
+                    return Promise.resolve();
+                })
+        },
+        scrollBottom() {
+            if (messagesController.parent) {
+                const chatList = document.querySelector(`.${messagesController.parent.class}`);
+                if (chatList)
+                    chatList.scrollTop = chatList.scrollHeight;
+            }
+        }
+    }
 }

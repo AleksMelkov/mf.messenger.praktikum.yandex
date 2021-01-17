@@ -1,4 +1,4 @@
-import { BaseAPI } from "./BaseAPI.js";
+import { BaseAPI } from "./BaseAPI";
 
 export class GetUserApi extends BaseAPI {
     request(...args:number[]) {

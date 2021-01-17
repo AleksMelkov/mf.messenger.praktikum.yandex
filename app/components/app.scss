@@ -115,6 +115,9 @@ body {
   height: 100%;
   position: relative;
 }
+.chats-wrapper__main-content-hide {
+  display: none;
+}
 .chats-wrapper__empty-content {
   position: absolute;
   width: 100%;
@@ -168,3 +171,16 @@ body {
   text-align: center;
   color: #1A7749;
 }
+@import "./list/messages/messages";
+.main-content__bottom-panel {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border-top: 1px solid rgba(0,0,0,.125);
+  padding: 20px 0;
+  position: absolute;
+  bottom: 0;
+}
+@import "./buttons/uploadAttach/uploadAttach";
+@import "./inputs/messageInput/messageInput";
+@import "./buttons/sendMessage/sendMessage";

@@ -1,10 +1,10 @@
-import { ControllerType } from "../../controllerType.js";
-import Store from "../../../Store.js";
-import { SaveUserAvatarApi } from "../../../api/saveUserApi.js";
-import Router from "../../../Router.js";
-import { ROUTE_LIST } from "../../../routes/routeList.js";
+import { ControllerType } from "../../controllerType";
+import Store from "../../../Store";
+import { SaveUserAvatarApi } from "../../../api/saveUserApi";
+import Router from "../../../Router";
+import { ROUTE_LIST } from "../../../routes/routeList";
 
-const saveAvatar = new SaveUserAvatarApi('/user/profile.js');
+const saveAvatar = new SaveUserAvatarApi('/user/profile');
 const router = new Router();
 
 export const changeAvatarComponent:ControllerType = {

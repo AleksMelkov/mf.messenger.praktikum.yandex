@@ -1,8 +1,8 @@
-import Page from "../Page.js";
+import Page from "../Page";
 
-import Content from "../components/content/Content.js";
-import { serverErrorPageTmpl } from "../components/content/serverErrorPage/template.js";
-import { serverErrorPageController } from "../components/content/serverErrorPage/controller.js";
+import Content from "../components/content/Content";
+import { serverErrorPageTmpl } from "../components/content/serverErrorPage/template";
+import { serverErrorPageController } from "../components/content/serverErrorPage/controller";
 
 enum CONTROLLERS {
     ERROR = 'error-controller',

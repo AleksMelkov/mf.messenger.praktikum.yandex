@@ -1,2 +1,0 @@
-export var profileFormTemplate = "\n    <div class=\"{{ elementClass }}\" type=\"{{ elementType }}\">\n        <div class=\"profile-wrapper-form__element-name\">{{ header }}</div>\n        <div class=\"profile-wrapper-form__element-input\" name=\"{{ name }}\" type=\"{{ type }}\" contenteditable=\"{{ contenteditable }}\" data-placeholder=\"{{ placeholder }}\"></div>\n    </div>\n";
-//# sourceMappingURL=template.js.map

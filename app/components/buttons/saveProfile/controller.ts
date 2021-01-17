@@ -1,9 +1,9 @@
-import { ControllerType } from "../../controllerType.js";
-import Validator from "../../../Validator.js";
-import Store from "../../../Store.js";
-import { SaveUserProfileApi } from "../../../api/saveUserApi.js";
-import Router from "../../../Router.js";
-import { ROUTE_LIST } from "../../../routes/routeList.js";
+import { ControllerType } from "../../controllerType";
+import Validator from "../../../Validator";
+import Store from "../../../Store";
+import { SaveUserProfileApi } from "../../../api/saveUserApi";
+import Router from "../../../Router";
+import { ROUTE_LIST } from "../../../routes/routeList";
 
 const saveProfile = new SaveUserProfileApi('/user');
 const router = new Router();

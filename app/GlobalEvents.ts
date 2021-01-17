@@ -1,5 +1,9 @@
 export const GLOBAL_EVENTS = {
     CHANGE_ELEMENT_PROPS: 'change_element_props',
+    GET_CHAT_MESSAGES: 'get_chat_messages',
+    NEW_MESSAGE: 'new_message',
+    SEND_MESSAGE: 'send_message',
+    SEND_MESSAGE_CLICK: 'send_message_click',
     // FAVORITE: 'favorite_click',
     // PROFILE: 'profile_click',
     SEARCH: 'search_input',

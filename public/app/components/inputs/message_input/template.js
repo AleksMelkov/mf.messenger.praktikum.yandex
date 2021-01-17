@@ -1,2 +1,0 @@
-export var messageInputTmpl = "\n    <div class=\"{{ parent.class }} contenteditable_fw\"  contenteditable=\"true\" data-placeholder=\"\u0421\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u0435\"></div>\n";
-//# sourceMappingURL=template.js.map

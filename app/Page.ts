@@ -1,10 +1,10 @@
-import Block from "./components/Block.js";
-import { AuthUserInfo } from "./api/authApi.js";
-import Router from "./Router.js";
-import { ROUTE_LIST } from "./routes/routeList.js";
-import EventBus from "./EventBus.js";
-import {GLOBAL_EVENTS} from "./GlobalEvents.js";
-import Store from "./Store.js";
+import Block from "./components/Block";
+import { AuthUserInfo } from "./api/authApi";
+import Router from "./Router";
+import { ROUTE_LIST } from "./routes/routeList";
+import EventBus from "./EventBus";
+import {GLOBAL_EVENTS} from "./GlobalEvents";
+import Store from "./Store";
 
 const router = new Router();
 const eventBus = new EventBus();
@@ -25,6 +25,7 @@ export default class Page {
         this.baseStore = new Store({
             user:this.userReducer,
             chats:this.chatsReducer,
+            user_list:this.userListReducer,
             load:this.loadingReducer,
             password:this.passwordReducer,
         },{
@@ -46,7 +47,8 @@ export default class Page {
             load: {
                 inProgress: true
             },
-            chats:[],
+            chats:{},
+            user_list:[],
         },true);
         this.isAuth();
     }
@@ -66,6 +68,23 @@ export default class Page {
                         state[prop] = action.payload[prop];
                     }
                 })
+            }
+        }
+        return state;
+    }
+
+    protected userListReducer(state:Record<string, any>, action: { type: string, payload: any }) {
+        switch (action.type) {
+            case 'ADD_TO_LIST': {
+                let displayName = `${action.payload.first_name} ${action.payload.second_name}`;
+                if (action.payload.display_name) {
+                    displayName = action.payload.display_name
+                }
+                state[action.payload.id] = displayName;
+                break;
+            }
+            case 'CLEAR_LIST': {
+                state = [];
             }
         }
         return state;
@@ -118,7 +137,6 @@ export default class Page {
     }
 
     protected isAuth() {
-        this.baseStore.dispatch({type:'CHANGE_STATUS'});
         userInfo.request()
             .then(res=>JSON.parse(res.responseText))
             .then(data=>{
@@ -129,7 +147,6 @@ export default class Page {
                         type: "GET_USER_INFO",
                         payload: data
                     });
-                    this.baseStore.dispatch({type:'CHANGE_STATUS'});
                 }
             }).catch(()=>{
                 router.go(ROUTE_LIST.SERVER_ERROR);

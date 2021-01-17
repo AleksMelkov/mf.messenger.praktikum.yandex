@@ -1,31 +1,31 @@
-import Page from "../Page.js";
-import { AuthUserInfo } from "../api/authApi.js";
-import Router from "../Router.js";
-import { ROUTE_LIST } from "../routes/routeList.js";
+import Page from "../Page";
+import { AuthUserInfo } from "../api/authApi";
+import Router from "../Router";
+import { ROUTE_LIST } from "../routes/routeList";
 
-import Button from "../components/buttons/Button.js";
-import { profileReturnTmpl} from "../components/buttons/profileReturn/template.js";
-import { profileReturnController} from "../components/buttons/profileReturn/controller.js";
-import { changeAvatarTmpl} from "../components/buttons/changeAvatar/template.js";
-import { changeAvatarComponent} from "../components/buttons/changeAvatar/component.js";
-import { changeProfileTmpl} from "../components/buttons/changeProfile/template.js";
-import { changeProfileController} from "../components/buttons/changeProfile/controller.js";
-import { changePassTmpl} from "../components/buttons/changePass/template.js";
-import { changePassController} from "../components/buttons/changePass/controller.js";
-import { exitProfileTmpl} from "../components/buttons/exitProfile/template.js";
-import { exitProfileController} from "../components/buttons/exitProfile/controller.js";
-import { saveProfileTmpl} from "../components/buttons/saveProfile/template.js";
-import { saveProfileController} from "../components/buttons/saveProfile/controller.js";
-import { savePassTmpl} from "../components/buttons/savePass/template.js";
-import { savePassController} from "../components/buttons/savePass/controller.js";
+import Button from "../components/buttons/Button";
+import { profileReturnTmpl} from "../components/buttons/profileReturn/template";
+import { profileReturnController} from "../components/buttons/profileReturn/controller";
+import { changeAvatarTmpl} from "../components/buttons/changeAvatar/template";
+import { changeAvatarComponent} from "../components/buttons/changeAvatar/component";
+import { changeProfileTmpl} from "../components/buttons/changeProfile/template";
+import { changeProfileController} from "../components/buttons/changeProfile/controller";
+import { changePassTmpl} from "../components/buttons/changePass/template";
+import { changePassController} from "../components/buttons/changePass/controller";
+import { exitProfileTmpl} from "../components/buttons/exitProfile/template";
+import { exitProfileController} from "../components/buttons/exitProfile/controller";
+import { saveProfileTmpl} from "../components/buttons/saveProfile/template";
+import { saveProfileController} from "../components/buttons/saveProfile/controller";
+import { savePassTmpl} from "../components/buttons/savePass/template";
+import { savePassController} from "../components/buttons/savePass/controller";
 
-import Content from "../components/content/Content.js";
-import { profileHeaderTmpl} from "../components/content/profileHeader/template.js";
-import { profileHeaderController} from "../components/content/profileHeader/controller.js";
+import Content from "../components/content/Content";
+import { profileHeaderTmpl} from "../components/content/profileHeader/template";
+import { profileHeaderController} from "../components/content/profileHeader/controller";
 
-import Form from "../components/forms/Form.js";
-import { profileFormTemplate} from "../components/forms/profileForm/template.js";
-import { profileFormController} from "../components/forms/profileForm/controller.js";
+import Form from "../components/forms/Form";
+import { profileFormTemplate} from "../components/forms/profileForm/template";
+import { profileFormController} from "../components/forms/profileForm/controller";
 
 enum CONTROLLERS {
     PROFILE_RETURN = 'profile-return-controller',

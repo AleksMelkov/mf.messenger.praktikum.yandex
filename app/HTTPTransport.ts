@@ -1,4 +1,4 @@
-import { queryString } from "./utils/queryString.js";
+import { queryString } from "./utils/queryString";
 
 type Options = {
     headers?: Record<string,string>,

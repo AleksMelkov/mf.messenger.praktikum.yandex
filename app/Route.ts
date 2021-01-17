@@ -1,4 +1,4 @@
-import Page from "./Page.js";
+import Page from "./Page";
 
 type asPage<T> = new (isNew:boolean) => T;
 

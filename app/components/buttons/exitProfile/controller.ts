@@ -1,7 +1,7 @@
-import { ControllerType } from "../../controllerType.js";
-import Router from "../../../Router.js";
-import { ROUTE_LIST } from "../../../routes/routeList.js";
-import { AuthLogout } from "../../../api/authApi.js";
+import { ControllerType } from "../../controllerType";
+import Router from "../../../Router";
+import { ROUTE_LIST } from "../../../routes/routeList";
+import { AuthLogout } from "../../../api/authApi";
 
 const router = new Router();
 const logout = new AuthLogout('/auth');

@@ -1,8 +1,8 @@
-import { ControllerType } from "../../controllerType.js";
-import Store from "../../../Store.js";
-import { SaveUserPassApi } from "../../../api/saveUserApi.js";
-import Router from "../../../Router.js";
-import { ROUTE_LIST } from "../../../routes/routeList.js";
+import { ControllerType } from "../../controllerType";
+import Store from "../../../Store";
+import { SaveUserPassApi } from "../../../api/saveUserApi";
+import Router from "../../../Router";
+import { ROUTE_LIST } from "../../../routes/routeList";
 
 const savePass = new SaveUserPassApi('/user');
 const router = new Router();

@@ -1,13 +1,13 @@
-import Router from "../Router.js";
-import { ROUTE_LIST} from "./routeList.js";
+import Router from "../Router";
+import { ROUTE_LIST} from "./routeList";
 
 
-import Auth from "../pages/Auth.js";
-import Register from "../pages/Register.js";
-import Chats from "../pages/Chats.js";
-import Profile from "../pages/Profile.js";
-import NotFound from "../pages/NotFound.js";
-import ServerError from "../pages/ServerError.js";
+import Auth from "../pages/Auth";
+import Register from "../pages/Register";
+import Chats from "../pages/Chats";
+import Profile from "../pages/Profile";
+import NotFound from "../pages/NotFound";
+import ServerError from "../pages/ServerError";
 
 const router = new Router();
 

@@ -1,5 +1,5 @@
-import HTTPTransport from "../HTTPTransport.js";
-import { baseApiUrl } from "../baseApiUrl.js";
+import HTTPTransport from "../HTTPTransport";
+import { baseApiUrl } from "../baseApiUrl";
 
 export class BaseAPI {
     public http:HTTPTransport;

@@ -1,9 +1,9 @@
-import { ControllerType } from "../../controllerType.js";
-import Validator from "../../../Validator.js";
-import EventBus from "../../../EventBus.js";
-import { GLOBAL_EVENTS} from "../../../GlobalEvents.js";
-import Store from "../../../Store.js";
-import { getArrayElement } from "../../../utils/getArrayElement.js";
+import { ControllerType } from "../../controllerType";
+import Validator from "../../../Validator";
+import EventBus from "../../../EventBus";
+import { GLOBAL_EVENTS} from "../../../GlobalEvents";
+import Store from "../../../Store";
+import { getArrayElement } from "../../../utils/getArrayElement";
 
 const eventBus = new EventBus();
 
