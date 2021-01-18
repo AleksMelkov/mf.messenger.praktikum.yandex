@@ -1,7 +1,7 @@
-import ChatWebSocket from "../ChatWebSocket";
+import ChatWebSocket from '../ChatWebSocket';
 
 export type ControllerType = {
-    component_name?:string
+    componentName?:string
     parent:Record<string, string>,
     contenteditableVal?:boolean,
     elementClass?:string,

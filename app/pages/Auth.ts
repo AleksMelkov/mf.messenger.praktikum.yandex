@@ -1,14 +1,14 @@
-import Page from "../Page";
+import Page from '../Page';
 
-import Form from "../components/forms/Form";
-import { authTmpl} from "../components/forms/auth/template";
-import { authController} from "../components/forms/auth/controller";
+import Form from '../components/forms/Form';
+import { authTmpl } from '../components/forms/auth/template';
+import { authController } from '../components/forms/auth/controller';
 
-import Button from "../components/buttons/Button";
-import { authSubmitTmpl} from "../components/buttons/authSubmit/template";
-import { authSubmitController} from "../components/buttons/authSubmit/controller";
-import { notAccountTmpl} from "../components/buttons/notAccount/template";
-import { notAccountController} from "../components/buttons/notAccount/controller";
+import Button from '../components/buttons/Button';
+import { authSubmitTmpl } from '../components/buttons/authSubmit/template';
+import { authSubmitController } from '../components/buttons/authSubmit/controller';
+import { notAccountTmpl } from '../components/buttons/notAccount/template';
+import { notAccountController } from '../components/buttons/notAccount/controller';
 
 enum CONTROLLERS {
     AUTH = 'auth-controller',
@@ -26,46 +26,46 @@ export default class Auth extends Page {
     protected modalWrapper:HTMLElement|null;
 
     constructor() {
-        super();
-        this.modalWrapper = document.querySelector('.window-wrapper');
-        if (!this.modalWrapper) {
-            this.modalWrapper = document.createElement('div');
-            this.modalWrapper.classList.add('window-wrapper');
-            const body = document.querySelector('body');
-            (body as HTMLElement).prepend(this.modalWrapper);
-        }
+      super();
+      this.modalWrapper = document.querySelector('.window-wrapper');
+      if (!this.modalWrapper) {
+        this.modalWrapper = document.createElement('div');
+        this.modalWrapper.classList.add('window-wrapper');
+        const body = document.querySelector('body');
+        (body as HTMLElement).prepend(this.modalWrapper);
+      }
 
-        this.title = 'Авторизация';
-        this.installTitle();
+      this.title = 'Авторизация';
+      this.installTitle();
     }
 
     public init() {
-        this.authInit();
-        this.authSubmitInit();
-        this.notAccountInit();
+      this.authInit();
+      this.authSubmitInit();
+      this.notAccountInit();
     }
 
     protected authInit() {
-        this.mountComponent(CONTROLLERS.AUTH,authController);
-        this.addingElement(ELEMENTS.AUTH,Form,CONTROLLERS.AUTH,authTmpl);
-        this.renderAppend((this.modalWrapper as HTMLElement),ELEMENTS.AUTH);
+      this.mountComponent(CONTROLLERS.AUTH, authController);
+      this.addingElement(ELEMENTS.AUTH, Form, CONTROLLERS.AUTH, authTmpl);
+      this.renderAppend((this.modalWrapper as HTMLElement), ELEMENTS.AUTH);
     }
 
     protected authSubmitInit() {
-        this.mountComponent(CONTROLLERS.AUTH_SUBMIT,authSubmitController);
-        this.addingElement(ELEMENTS.AUTH_SUBMIT,Button,CONTROLLERS.AUTH_SUBMIT,authSubmitTmpl);
-        const authController = this.getComponent(CONTROLLERS.AUTH);
-        if (authController) {
-            this.renderAppend(`.${authController.buttonBlock.class}`,ELEMENTS.AUTH_SUBMIT);
-        }
+      this.mountComponent(CONTROLLERS.AUTH_SUBMIT, authSubmitController);
+      this.addingElement(ELEMENTS.AUTH_SUBMIT, Button, CONTROLLERS.AUTH_SUBMIT, authSubmitTmpl);
+      const authController = this.getComponent(CONTROLLERS.AUTH);
+      if (authController) {
+        this.renderAppend(`.${authController.buttonBlock.class}`, ELEMENTS.AUTH_SUBMIT);
+      }
     }
 
     protected notAccountInit() {
-        this.mountComponent(CONTROLLERS.NOT_ACCOUNT,notAccountController);
-        this.addingElement(ELEMENTS.NOT_ACCOUNT,Button,CONTROLLERS.NOT_ACCOUNT,notAccountTmpl);
-        const authController = this.getComponent(CONTROLLERS.AUTH);
-        if (authController) {
-            this.renderAppend(`.${authController.buttonBlock.class}`,ELEMENTS.NOT_ACCOUNT);
-        }
+      this.mountComponent(CONTROLLERS.NOT_ACCOUNT, notAccountController);
+      this.addingElement(ELEMENTS.NOT_ACCOUNT, Button, CONTROLLERS.NOT_ACCOUNT, notAccountTmpl);
+      const authController = this.getComponent(CONTROLLERS.AUTH);
+      if (authController) {
+        this.renderAppend(`.${authController.buttonBlock.class}`, ELEMENTS.NOT_ACCOUNT);
+      }
     }
 }
