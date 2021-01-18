@@ -1,8 +1,8 @@
-import { ControllerType } from "../../controllerType";
+import { ControllerType } from '../../controllerType';
 
 export const registerSubmitController:ControllerType = {
-    parent: {
-        class: 'auth-window-btnArea__bigBtn',
-        text: 'Зарегистрироваться',
-    }
-}
+  parent: {
+    class: 'auth-window-btnArea__bigBtn',
+    text: 'Зарегистрироваться',
+  },
+};
